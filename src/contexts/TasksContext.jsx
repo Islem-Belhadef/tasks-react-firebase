@@ -10,7 +10,8 @@ import {
   setDoc,
   orderBy,
   deleteDoc,
-  onSnapshot
+  onSnapshot,
+  query,
 } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 
@@ -47,7 +48,8 @@ export const TasksProvider = ({ children }) => {
       //   });
 
       const unsubscribe = onSnapshot(
-        collection(firestore, "users", currentUser.uid, "tasks"),
+        query(collection(firestore, "users", currentUser.uid, "tasks"),
+        orderBy("desc")),
         (querySnapshot) => {
           setTasks([]);
           querySnapshot.forEach((doc) => {
@@ -55,22 +57,36 @@ export const TasksProvider = ({ children }) => {
           });
         }
       );
+
+      return unsubscribe;
     }
   };
 
   const getCategories = () => {
     if (currentUser) {
-      setCategories([]);
-      getDocs(collection(firestore, "users", currentUser.uid, "categories"))
-        .then((querySnapshot) => {
+      // setCategories([]);
+      // getDocs(collection(firestore, "users", currentUser.uid, "categories"))
+      //   .then((querySnapshot) => {
+      //     querySnapshot.forEach((doc) => {
+      //       setCategories((prev) => [...prev, doc.data()]);
+      //     });
+      //   })
+      //   .catch((error) => {
+      //     setError(error.code);
+      //     console.log(error);
+      //   });
+
+      const unsubscribe = onSnapshot(
+        collection(firestore, "users", currentUser.uid, "categories"),
+        (querySnapshot) => {
+          setCategories([]);
           querySnapshot.forEach((doc) => {
             setCategories((prev) => [...prev, doc.data()]);
           });
-        })
-        .catch((error) => {
-          setError(error.code);
-          console.log(error);
-        });
+        }
+      );
+
+      return unsubscribe;
     }
   };
 

@@ -16,13 +16,22 @@ const Tasks = () => {
   const { currentUser } = useAuth();
   const { lightMode, light, dark } = useTheme();
   const { categories, tasks, addTask, isLoading } = useTasks();
-  
+
   const date = new Date();
-  const now = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+'T'+date.getHours()+':'+date.getMinutes();
-  
-    const [body, setBody] = useState("");
-    const [category, setCategory] = useState("");
-    const [datetime, setDatetime] = useState(now);
+  const now =
+    date.getFullYear() +
+    "-" +
+    (date.getMonth() + 1) +
+    "-" +
+    date.getDate() +
+    "T" +
+    date.getHours() +
+    ":" +
+    date.getMinutes();
+
+  const [body, setBody] = useState("");
+  const [category, setCategory] = useState("");
+  const [datetime, setDatetime] = useState(now);
 
   const getLatestTasks = () => {
     //
@@ -116,7 +125,9 @@ const Tasks = () => {
                   setCategory(e.target.value);
                 }}
               >
-                <option value="" disabled>Category</option>
+                <option value="" disabled>
+                  Category
+                </option>
                 {categories.map((category, i) => (
                   <option
                     key={i}
@@ -148,10 +159,17 @@ const Tasks = () => {
           >
             Recent tasks
           </h2>
-          {tasks.length === 0 && <div>No tasks yet, add one</div>}
+          {tasks.length === 0 && (
+            <div>
+              <h3 className="text-xl font-body font-semibold w-full mt-6 text-white">
+                You don't have any tasks 👏
+              </h3>
+            </div>
+          )}
           {tasks.map((task) => (
             <TaskCard key={task.id} task={task} />
           ))}
+          <div className="h-10"></div>
         </div>
       </div>
     </div>

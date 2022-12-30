@@ -37,7 +37,7 @@ const TaskCard = ({ task }) => {
 
   const taskDate = new Date(task.data().datetime);
 
-  const ampm = taskDate.getHours >= 12 ? "PM" : "AM";
+  // const ampm = taskDate.getHours >= 12 ? "PM" : "AM";
 
   const today = new Date().getDate();
 
@@ -52,7 +52,7 @@ const TaskCard = ({ task }) => {
   const handleUpdateTask = (e) => {
     e.preventDefault();
     updateTask(task, done, taskCategory, favorite);
-  }
+  };
 
   return (
     <div
@@ -74,7 +74,10 @@ const TaskCard = ({ task }) => {
           ></div>
           <h3
             className="mx-5 py-2 text-lg"
-            style={{ color: lightMode ? light.text : dark.text, textDecorationLine: task.data().done ? "line-through" : "" }}
+            style={{
+              color: lightMode ? light.text : dark.text,
+              textDecorationLine: task.data().done ? "line-through" : "",
+            }}
           >
             {task.data().body}
           </h3>
@@ -86,18 +89,23 @@ const TaskCard = ({ task }) => {
           >
             {/* {task.data().datetime} */}
             {taskDate.getDate() === today
-              ? (taskDate.getHours() % 12 != 0
-                  ? taskDate.getHours() % 12
-                  : 12) +
+              ? taskDate.getHours()+
                 ":" +
-                taskDate.getMinutes() +
-                " " +
-                ampm
+                taskDate.getMinutes()
               : months[taskDate.getMonth()] +
                 " " +
                 (taskDate.getDate() < 10
-                  ? "0" + taskDate.getDate()+' - '+taskDate.getHours()+":"+taskDate.getMinutes()
-                  : taskDate.getDate()+' - '+taskDate.getHours()+":"+taskDate.getMinutes())}
+                  ? "0" +
+                    taskDate.getDate() +
+                    " - " +
+                    taskDate.getHours() +
+                    ":" +
+                    taskDate.getMinutes()
+                  : taskDate.getDate() +
+                    " - " +
+                    taskDate.getHours() +
+                    ":" +
+                    taskDate.getMinutes())}
           </h3>
           <div
             className="rounded-md w-6 h-6 cursor-pointer flex items-center justify-center"
@@ -157,7 +165,7 @@ const TaskCard = ({ task }) => {
                 handleUpdateTask(e);
               }}
             >
-              <option value="">Not categorized</option>
+              <option value="">category</option>
               {categories.map((category, i) => (
                 <option
                   key={i}
