@@ -90,24 +90,6 @@ const Profile = () => {
                 }}
               />
             </label>
-            <label
-              htmlFor="password"
-              className="font-medium text-lg flex flex-col gap-2 w-full"
-              style={{ color: lightMode ? "#FFFFFF" : dark.text }}
-            >
-              Password
-              <input
-                type="password"
-                name="password"
-                id="password"
-                className="py-2 px-4 rounded-lg focus:outline-none font-normal"
-                style={{ backgroundColor: lightMode ? light.card : dark.card, color: lightMode ? light.text : dark.text }}
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-            </label>
             <div className="flex justify-center items-center gap-12 pt-6">
               <button
                 type="reset"

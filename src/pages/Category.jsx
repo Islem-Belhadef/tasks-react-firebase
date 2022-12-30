@@ -1,6 +1,6 @@
 // React & Router
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, useParams } from "react-router-dom";
 
 // Contexts
 import { useAuth } from "../contexts/AuthContext";
@@ -10,11 +10,27 @@ import { useTasks } from "../contexts/TasksContext";
 // Components
 import SideMenu from "../components/SideMenu";
 import TaskCard from "../components/TaskCard";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "../config/FirebaseClient";
 
-const Tasks = () => {
+const Category = () => {
   const { currentUser } = useAuth();
   const { lightMode, light, dark } = useTheme();
-  const { categories, tasks, addTask, isLoading } = useTasks();
+  const { categories, tasks, addTask, isLoading, getCategory } = useTasks();
+
+  const { name } = useParams();
+
+  useEffect(() => {
+    getDoc(doc(firestore, "users", currentUser.uid, "categories", name))
+      .then((doc) => {
+        setCategory(doc.data());
+        console.log(category);
+      })
+      .catch((error) => {
+        //   setError(error.code);
+        console.log(error.code);
+      });
+  }, []);
 
   const date = new Date();
   const now =
@@ -41,7 +57,7 @@ const Tasks = () => {
   };
 
   const handleAddTask = (e) => {
-    addTask(body, datetime, category);
+    addTask(body, datetime, category.name);
   };
 
   if (!currentUser) {
@@ -108,38 +124,9 @@ const Tasks = () => {
                   }}
                 />
               </div>
-              <select
-                name="category"
-                id="category"
-                className="rounded-lg py-2 px-4 pr-10 font-medium cursor-pointer focus:outline-none"
-                style={{
-                  backgroundColor: lightMode ? light.btn : dark.btn,
-                  color: lightMode ? light.primary : dark.text,
-                  backgroundImage: lightMode
-                    ? "url(/arrow_down_light.svg)"
-                    : "url(/arrow_down_dark.svg)",
-                }}
-                value={category}
-                onChange={(e) => {
-                  setCategory(e.target.value);
-                }}
-              >
-                <option value="" disabled>
-                  Category
-                </option>
-                {categories.map((category, i) => (
-                  <option
-                    key={i}
-                    value={category.name}
-                    style={{
-                      backgroundColor: category.color,
-                      color: light.text,
-                    }}
-                  >
-                    {category.name}
-                  </option>
-                ))}
-              </select>
+              <div className="rounded-lg ml-3 py-2 px-4 font-medium">
+                {category.name}
+              </div>
               <button
                 type="submit"
                 className="rounded-lg ml-3 py-2 px-4 font-medium"
@@ -175,4 +162,4 @@ const Tasks = () => {
   );
 };
 
-export default Tasks;
+export default Category;

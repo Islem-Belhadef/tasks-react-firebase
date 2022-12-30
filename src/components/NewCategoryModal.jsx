@@ -32,8 +32,9 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
             handleCreateCategory(e);
           }}
           className="flex flex-col gap-6"
+          autoComplete="off"
         >
-          <label htmlFor="name" className="flex items-center gap-4">
+          <label htmlFor="name" className="flex items-center gap-4" style={{color: lightMode?light.text:dark.text}}>
             Category label
             <input
               type="text"
@@ -53,7 +54,7 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
               }}
             />
           </label>
-          <label htmlFor="color" className="flex items-center gap-4">
+          <label htmlFor="color" className="flex items-center gap-4" style={{color: lightMode?light.text:dark.text}}>
             Category color
             <input
               type="color"

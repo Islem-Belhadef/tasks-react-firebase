@@ -29,59 +29,19 @@ export const TasksProvider = ({ children }) => {
 
   const [tasks, setTasks] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState(null);
 
   const getTasks = () => {
     if (currentUser) {
-      setTasks([]);
-      // getDocs(
-      //   collection(firestore, "users", currentUser.uid, "tasks"),
-      //   orderBy("datetime")
-      // )
-      //   .then((querySnapshot) => {
-      //     querySnapshot.forEach((doc) => {
-      //       setTasks((prev) => [...prev, doc]);
-      //     });
-      //   })
-      //   .catch((error) => {
-      //     setError(error.code);
-      //     console.log(error);
-      //   });
-
       const unsubscribe = onSnapshot(
-        query(collection(firestore, "users", currentUser.uid, "tasks"),
-        orderBy("desc")),
+        query(
+          collection(firestore, "users", currentUser.uid, "tasks"),
+          orderBy("datetime", "desc")
+        ),
         (querySnapshot) => {
           setTasks([]);
           querySnapshot.forEach((doc) => {
             setTasks((prev) => [...prev, doc]);
-          });
-        }
-      );
-
-      return unsubscribe;
-    }
-  };
-
-  const getCategories = () => {
-    if (currentUser) {
-      // setCategories([]);
-      // getDocs(collection(firestore, "users", currentUser.uid, "categories"))
-      //   .then((querySnapshot) => {
-      //     querySnapshot.forEach((doc) => {
-      //       setCategories((prev) => [...prev, doc.data()]);
-      //     });
-      //   })
-      //   .catch((error) => {
-      //     setError(error.code);
-      //     console.log(error);
-      //   });
-
-      const unsubscribe = onSnapshot(
-        collection(firestore, "users", currentUser.uid, "categories"),
-        (querySnapshot) => {
-          setCategories([]);
-          querySnapshot.forEach((doc) => {
-            setCategories((prev) => [...prev, doc.data()]);
           });
         }
       );
@@ -108,38 +68,6 @@ export const TasksProvider = ({ children }) => {
       });
   };
 
-  const deleteTask = (taskID) => {
-    setIsLoading(true);
-    deleteDoc(doc(firestore, "users", currentUser.uid, "tasks", taskID))
-      .then((res) => {
-        console.log("task deleted");
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setError(error.code);
-        setIsLoading(false);
-      });
-  };
-
-  const addCategory = (name, color) => {
-    setIsLoading(true);
-    setDoc(doc(firestore, "users", currentUser.uid, "categories", name), {
-      name: name,
-      color: color,
-    })
-      .then((res) => {
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setError(error.code);
-        setIsLoading(false);
-      });
-  };
-
-  const deleteCategory = () => {
-    //
-  };
-
   const updateTask = (task, done, category, favorite) => {
     console.log(done, category, favorite);
     setIsLoading(true);
@@ -161,6 +89,67 @@ export const TasksProvider = ({ children }) => {
       });
   };
 
+  const deleteTask = (taskID) => {
+    setIsLoading(true);
+    deleteDoc(doc(firestore, "users", currentUser.uid, "tasks", taskID))
+      .then((res) => {
+        console.log("task deleted");
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error.code);
+        setIsLoading(false);
+      });
+  };
+
+  const getCategories = () => {
+    if (currentUser) {
+      const unsubscribe = onSnapshot(
+        collection(firestore, "users", currentUser.uid, "categories"),
+        (querySnapshot) => {
+          setCategories([]);
+          querySnapshot.forEach((doc) => {
+            setCategories((prev) => [...prev, doc.data()]);
+          });
+        }
+      );
+
+      return unsubscribe;
+    }
+  };
+
+  const getCategory = (name) => {
+    setIsLoading(true);
+    getDoc(doc(firestore, "users", currentUser.uid, "categories", name))
+    .then((doc) => {
+      setCategory(doc.data());
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      setError(error.code);
+      setIsLoading(false);
+    })
+  }
+
+  const addCategory = (name, color) => {
+    setIsLoading(true);
+    setDoc(doc(firestore, "users", currentUser.uid, "categories", name), {
+      name: name,
+      color: color,
+    })
+      .then((res) => {
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error.code);
+        setIsLoading(false);
+      });
+  };
+
+  const deleteCategory = () => {
+    //
+  };
+
   useEffect(() => {
     getCategories();
     getTasks();
@@ -171,6 +160,7 @@ export const TasksProvider = ({ children }) => {
     error,
     tasks,
     categories,
+    getCategory,
     getTasks,
     addTask,
     updateTask,

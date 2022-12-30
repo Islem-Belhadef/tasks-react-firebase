@@ -163,20 +163,26 @@ const SideMenu = (props) => {
                     animate={{ y: 0, opacity: 1 }}
                   >
                     {tasksCategories.map((cat, i) => (
-                      <Link key={i} to={"/categories/" + cat.name}>
-                        <div className="flex items-center gap-4 hover:bg-gray-100 w-5/6 py-2 px-4 rounded-lg ml-6 cursor-pointer">
-                          <div
-                            className="h-5 w-5 rounded-lg"
-                            style={{ backgroundColor: cat.color }}
-                          ></div>
-                          <div
-                            className="text-lg"
-                            style={{
-                              color: lightMode ? light.text : dark.text,
-                            }}
-                          >
-                            {cat.name}
-                          </div>
+                      <Link
+                        key={i}
+                        to={"/categories/" + cat.name}
+                        className={
+                          lightMode
+                            ? "flex items-center gap-4 hover:bg-hoverLight w-5/6 py-2 px-4 rounded-lg ml-6 cursor-pointer"
+                            : "flex items-center gap-4 hover:bg-hoverDark w-5/6 py-2 px-4 rounded-lg ml-6 cursor-pointer"
+                        }
+                      >
+                        <div
+                          className="h-5 w-5 rounded-lg"
+                          style={{ backgroundColor: cat.color }}
+                        ></div>
+                        <div
+                          className="text-lg"
+                          style={{
+                            color: lightMode ? light.text : dark.text,
+                          }}
+                        >
+                          {cat.name}
                         </div>
                       </Link>
                     ))}
@@ -260,7 +266,9 @@ const SideMenu = (props) => {
                 handleLogout(e);
               }}
               className="rounded-lg text-red-600 cursor-pointer p-3 w-full"
-              style={{backgroundColor: lightMode ? "#fadedc" : dark.background}}
+              style={{
+                backgroundColor: lightMode ? "#fadedc" : dark.background,
+              }}
             >
               Logout
             </div>

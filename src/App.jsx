@@ -14,7 +14,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Tasks from "./pages/Tasks";
-// import Favorites from "./pages/Favorites";
+import Favorites from "./pages/Favorites";
+import Category from "./pages/Category";
 import Profile from "./pages/Profile";
 import { TasksProvider } from "./contexts/TasksContext";
 
@@ -31,7 +32,8 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/tasks" element={<Tasks />} />
-                {/* <Route path="/favorites" element={<Favorites />} /> */}
+                <Route path="/favorites" element={<Favorites />} />
+                <Route path="/categories/:name" element={<Category />} />
               </Routes>
             </TasksProvider>
           </AuthProvider>

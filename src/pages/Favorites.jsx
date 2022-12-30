@@ -11,7 +11,7 @@ import { useTasks } from "../contexts/TasksContext";
 import SideMenu from "../components/SideMenu";
 import TaskCard from "../components/TaskCard";
 
-const Tasks = () => {
+const Favorites = () => {
   const { currentUser } = useAuth();
   const { lightMode, light, dark } = useTheme();
   const { categories, tasks, addTask, isLoading } = useTasks();
@@ -175,4 +175,4 @@ const Tasks = () => {
   );
 };
 
-export default Tasks;
+export default Favorites;

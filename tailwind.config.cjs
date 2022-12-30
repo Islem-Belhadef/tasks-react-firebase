@@ -22,7 +22,8 @@ module.exports = {
         cardDark: "#101010",
         bg: "#FAFAFA",
         bgDark: "#1E1E1E",
-        overlay: "#000000e1"
+        hoverLight: "#F4F4F4",
+        hoverDark: "#1A1A1A",
       }
     },
   },
