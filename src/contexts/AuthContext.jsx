@@ -122,20 +122,11 @@ export const AuthProvider = ({ children }) => {
 
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        const user = result.user;
         navigate("/");
         setIsLoading(false);
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
         setError(errorCode);
         setIsLoading(false);
       });

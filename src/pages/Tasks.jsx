@@ -16,13 +16,13 @@ const Tasks = () => {
   const { currentUser } = useAuth();
   const { lightMode, light, dark } = useTheme();
   const { categories, tasks, addTask, isLoading } = useTasks();
-
-  console.log(tasks);
-  console.log(categories);
-
-  const [body, setBody] = useState("");
-  const [category, setCategory] = useState("");
-  const [datetime, setDatetime] = useState("");
+  
+  const date = new Date();
+  const now = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+'T'+date.getHours()+':'+date.getMinutes();
+  
+    const [body, setBody] = useState("");
+    const [category, setCategory] = useState("");
+    const [datetime, setDatetime] = useState(now);
 
   const getLatestTasks = () => {
     //
@@ -33,8 +33,6 @@ const Tasks = () => {
   };
 
   const handleAddTask = (e) => {
-    e.preventDefault();
-    if (datetime === "") setDatetime(new Date());
     addTask(body, datetime, category);
   };
 
@@ -59,7 +57,7 @@ const Tasks = () => {
             className="text-5xl font-body font-bold mt-20 mb-10"
             style={{ color: lightMode ? light.header : dark.header }}
           >
-            What are your tasks for today Islem?
+            What are your tasks for today {currentUser.displayName}?
           </h1>
           <form
             className="w-full flex justify-center"
@@ -72,10 +70,6 @@ const Tasks = () => {
               className="rounded-xl p-3 flex items-center w-3/4"
               style={{ backgroundColor: lightMode ? light.card : dark.card }}
             >
-              <div
-                className="rounded-md w-6 h-6"
-                style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
-              ></div>
               <input
                 type="text"
                 name="task"
@@ -86,6 +80,7 @@ const Tasks = () => {
                 required
                 value={body}
                 onChange={(e) => {
+                  e.preventDefault();
                   setBody(e.target.value);
                 }}
                 style={{ color: lightMode ? light.text : dark.text }}
@@ -121,6 +116,7 @@ const Tasks = () => {
                   setCategory(e.target.value);
                 }}
               >
+                <option value="" disabled>Category</option>
                 {categories.map((category, i) => (
                   <option
                     key={i}
@@ -153,8 +149,8 @@ const Tasks = () => {
             Recent tasks
           </h2>
           {tasks.length === 0 && <div>No tasks yet, add one</div>}
-          {tasks.map((task, i) => (
-            <TaskCard key={i} task={task} />
+          {tasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
           ))}
         </div>
       </div>
