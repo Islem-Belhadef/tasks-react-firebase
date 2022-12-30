@@ -5,27 +5,24 @@ import { Navigate } from "react-router-dom";
 // Contexts
 import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";
+import { useTasks } from "../contexts/TasksContext";
 
 // Components
 import SideMenu from "../components/SideMenu";
 import TaskCard from "../components/TaskCard";
-
-// Assets
-import arrowDown from "../assets/icons/arrow_down_blue.svg";
-import calendar from "../assets/icons/calendar_blue.svg";
+import LoadingAnimation from "../components/LoadingAnimation";
 
 const Tasks = () => {
   const { currentUser } = useAuth();
-  const { lightMode, light, dark} = useTheme();
+  const { lightMode, light, dark } = useTheme();
+  const { categories, tasks, addTask, isLoading } = useTasks();
 
-  const task = {
-    body: "Workout abs + biceps",
-    date: "08:00 AM",
-  };
+  console.log(tasks);
+  console.log(categories);
 
-  const [newTask, setNewTask] = useState("");
-  const [newCategory, setNewCategory] = useState("");
-  const [newDate, setNewDate] = useState("");
+  const [body, setBody] = useState("");
+  const [category, setCategory] = useState("");
+  const [datetime, setDatetime] = useState("");
 
   const getLatestTasks = () => {
     //
@@ -35,50 +32,130 @@ const Tasks = () => {
     //
   };
 
-  useEffect(() => {
-    //
-  }, []);
+  const handleAddTask = (e) => {
+    e.preventDefault();
+    if (datetime === "") setDatetime(new Date());
+    addTask(body, datetime, category);
+  };
 
   if (!currentUser) {
-    return <Navigate to="/login" />; 
+    return <Navigate to="/login" />;
   }
 
   return (
-    <div className="md:flex md:h-screen" style={{backgroundColor: lightMode ? light.wall : dark.wall}}>
+    <div
+      className="md:flex md:h-screen"
+      style={{ backgroundColor: lightMode ? light.wall : dark.wall }}
+    >
       <SideMenu />
-      <div className="w-full m-2 rounded-2xl overflow-y-scroll" style={{backgroundColor: lightMode ? light.background : dark.background}}>
+      <div
+        className="w-full m-2 rounded-2xl overflow-y-scroll"
+        style={{
+          backgroundColor: lightMode ? light.background : dark.background,
+        }}
+      >
         <div className=" flex flex-col items-center w-11/12 m-auto">
-          <h1 className="text-5xl font-body font-bold mt-20 mb-10" style={{color: lightMode ? light.header : dark.header}}>
+          <h1
+            className="text-5xl font-body font-bold mt-20 mb-10"
+            style={{ color: lightMode ? light.header : dark.header }}
+          >
             What are your tasks for today Islem?
           </h1>
-          <div className="rounded-xl p-3 flex items-center w-3/4" style={{backgroundColor: lightMode ? light.card : dark.card}}>
-            <div className="bg-gray-100 rounded-md w-6 h-6"></div>
-            <input
-              type="text"
-              name="task"
-              id="task"
-              maxLength="100"
-              placeholder="New task.."
-              className="mx-5 py-2 w-4/6 bg-transparent focus:outline-none"
-              value={newTask}
-              onChange={(e) => {
-                setNewTask(e.target.value);
-              }}
-            />
-            <div className="bg-gray-100 rounded-lg h-10 w-10 mr-3 flex justify-center items-center">
-              <img src={calendar} alt="calendar" className="w-6" />
+          <form
+            className="w-full flex justify-center"
+            onSubmit={(e) => {
+              handleAddTask(e);
+            }}
+            autoComplete="off"
+          >
+            <div
+              className="rounded-xl p-3 flex items-center w-3/4"
+              style={{ backgroundColor: lightMode ? light.card : dark.card }}
+            >
+              <div
+                className="rounded-md w-6 h-6"
+                style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
+              ></div>
+              <input
+                type="text"
+                name="task"
+                id="task"
+                maxLength="100"
+                placeholder="New task.."
+                className="mx-5 py-2 w-4/6 bg-transparent focus:outline-none"
+                required
+                value={body}
+                onChange={(e) => {
+                  setBody(e.target.value);
+                }}
+                style={{ color: lightMode ? light.text : dark.text }}
+              />
+              <div
+                className="rounded-lg h-10 w-10 mr-3 flex justify-center items-center"
+                style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
+              >
+                <input
+                  type="datetime-local"
+                  name="date"
+                  id="date"
+                  className="bg-transparent text-4xl text-transparent cursor-pointer focus:outline-none"
+                  value={datetime}
+                  onChange={(e) => {
+                    setDatetime(e.target.value);
+                  }}
+                />
+              </div>
+              <select
+                name="category"
+                id="category"
+                className="rounded-lg py-2 px-4 pr-10 font-medium cursor-pointer focus:outline-none"
+                style={{
+                  backgroundColor: lightMode ? light.btn : dark.btn,
+                  color: lightMode ? light.primary : dark.text,
+                  backgroundImage: lightMode
+                    ? "url(/arrow_down_light.svg)"
+                    : "url(/arrow_down_dark.svg)",
+                }}
+                value={category}
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                }}
+              >
+                {categories.map((category, i) => (
+                  <option
+                    key={i}
+                    value={category.name}
+                    style={{
+                      backgroundColor: category.color,
+                      color: light.text,
+                    }}
+                  >
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="submit"
+                className="rounded-lg ml-3 py-2 px-4 font-medium"
+                style={{
+                  backgroundColor: lightMode ? light.primary : dark.primary,
+                  color: dark.text,
+                }}
+              >
+                Add
+              </button>
             </div>
-            <div className="bg-gray-100 rounded-lg py-2 px-4 flex justify-center items-center cursor-pointer">
-              <p className="text-accent font-medium">Category</p>
-              <img src={arrowDown} alt="arrow down" className="w-3 ml-3" />
-            </div>
-          </div>
-          <h2 className="text-3xl font-body font-bold text-left w-full mt-20 mb-4" style={{color: lightMode ? light.header : dark.header}}>
+          </form>
+          <h2
+            className="text-3xl font-body font-bold text-left w-full mt-20 mb-4"
+            style={{ color: lightMode ? light.header : dark.header }}
+          >
             Recent tasks
           </h2>
-          <TaskCard task={task} />
-          <TaskCard task={task} />
-          <TaskCard task={task} />
+          {tasks.length === 0 && <div>No tasks yet, add one</div>}
+          {tasks.map((task, i) => (
+            <TaskCard key={i} task={task} />
+          ))}
         </div>
       </div>
     </div>

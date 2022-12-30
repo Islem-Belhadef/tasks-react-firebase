@@ -18,8 +18,9 @@ import {
   sendPasswordResetEmail,
   updateEmail,
   updatePassword,
+  updateProfile,
 } from "firebase/auth";
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const AuthContext = createContext();
 
@@ -38,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
   const provider = new GoogleAuthProvider();
 
-  const signup = (email, password, imgRef, imgState) => {
+  const signup = (email, password, name, imgRef, imgState) => {
     setIsLoading(true);
 
     if (imgState) {
@@ -47,28 +48,57 @@ export const AuthProvider = ({ children }) => {
         const profilePictureRef = ref(storage, `profilePictures/${email}`);
         uploadBytes(profilePictureRef, imgState)
           .then((res) => {
-            console.log(res);
-            // setIsLoading(false);
-            createUserWithEmailAndPassword(auth, email, password)
-              .then((userCredential) => {
-                const user = userCredential.user;
-                navigate("/");
-                setIsLoading(false);
+            getDownloadURL(profilePictureRef)
+              .then((url) => {
+                createUserWithEmailAndPassword(auth, email, password)
+                  .then((userCredential) => {
+                    const user = userCredential.user;
+                    updateProfile(user, {
+                      displayName: name,
+                      photoURL: url,
+                    });
+                    navigate("/");
+                    setIsLoading(false);
+                  })
+                  .catch((error) => {
+                    const errorCode = error.code;
+                    setError(errorCode);
+                    setIsLoading(false);
+                  });
               })
               .catch((error) => {
-                const errorCode = error.code;
-                setError(errorCode);
+                setError(error);
                 setIsLoading(false);
               });
           })
-          .catch((err) => {
-            setError(err);
+          .catch((error) => {
+            setError(error);
             setIsLoading(false);
           });
       } else {
         setError("Image size too big! it should be less than 4 mb");
         setIsLoading(false);
       }
+    } else {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          updateProfile(user, { displayName: name })
+            .then((res) => {
+              navigate("/");
+              setIsLoading(false);
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              setError(errorCode);
+              setIsLoading(false);
+            });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          setError(errorCode);
+          setIsLoading(false);
+        });
     }
   };
 
@@ -169,6 +199,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log(user);
         setCurrentUser(user);
         setUserLoading(false);
       } else {

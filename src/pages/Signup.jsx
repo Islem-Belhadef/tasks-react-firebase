@@ -21,8 +21,7 @@ const Signup = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
 
   const handleGoBack = (e) => {
@@ -41,7 +40,7 @@ const Signup = () => {
   const handleSignup = (e) => {
     e.preventDefault();
 
-    signup(email, password,pfp, profilePicture);
+    signup(email, password, name, pfp, profilePicture);
   };
 
   return (
@@ -145,33 +144,17 @@ const Signup = () => {
                 htmlFor="email"
                 className="font-medium text-gray-500 flex flex-col gap-2"
               >
-                Firstname
+                Name
                 <input
                   type="text"
-                  name="first-name"
-                  id="first-name"
+                  name="name"
+                  id="name"
+                  maxLength="20"
                   className="py-2 px-4 bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-200 text-text font-normal"
                   required
-                  value={firstName}
+                  value={name}
                   onChange={(e) => {
-                    setFirstName(e.target.value);
-                  }}
-                />
-              </label>
-              <label
-                htmlFor="email"
-                className="font-medium text-gray-500 flex flex-col gap-2"
-              >
-                Lastname
-                <input
-                  type="text"
-                  name="last-name"
-                  id="last-name"
-                  className="py-2 px-4 bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-200 text-text font-normal"
-                  required
-                  value={lastName}
-                  onChange={(e) => {
-                    setLastName(e.target.value);
+                    setName(e.target.value);
                   }}
                 />
               </label>

@@ -14,24 +14,26 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Tasks from "./pages/Tasks";
-import Favorites from "./pages/Favorites";
+// import Favorites from "./pages/Favorites";
 import Profile from "./pages/Profile";
+import { TasksProvider } from "./contexts/TasksContext";
 
 function App() {
-
   return (
     <div className="App">
       <Router>
         <ThemeProvider>
           <AuthProvider>
-            <Routes>
-              <Route path="/" element={<Navigate to="/tasks" />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/tasks" element={<Tasks />} />
-              <Route path="/favorites" element={<Favorites />} />
-            </Routes>
+            <TasksProvider>
+              <Routes>
+                <Route path="/" element={<Navigate to="/tasks" />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/tasks" element={<Tasks />} />
+                {/* <Route path="/favorites" element={<Favorites />} /> */}
+              </Routes>
+            </TasksProvider>
           </AuthProvider>
         </ThemeProvider>
       </Router>
