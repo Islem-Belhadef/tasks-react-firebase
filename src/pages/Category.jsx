@@ -101,7 +101,7 @@ const Category = () => {
             className="text-5xl font-body font-bold mt-20 mb-10"
             style={{ color: lightMode ? light.header : dark.header }}
           >
-            What are your tasks for today {currentUser.displayName}?
+            What are your <span style={{color: category.color}}>{name}</span> tasks for today {currentUser.displayName}?
           </h1>
           <form
             className="w-full flex justify-center"
@@ -147,8 +147,8 @@ const Category = () => {
               <div
                 className="rounded-lg ml-3 py-2 px-4 font-medium"
                 style={{
-                  color: lightMode ? light.primary : dark.text,
-                  backgroundColor: lightMode ? light.btn : dark.btn,
+                  color: light.text,
+                  backgroundColor: category.color,
                 }}
               >
                 {category.name}

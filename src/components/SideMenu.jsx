@@ -60,8 +60,8 @@ const SideMenu = (props) => {
               to="/profile"
               className={
                 lightMode
-                  ? "flex items-center my-6 px-4 py-2 rounded-md hover:bg-gray-100"
-                  : "flex items-center my-6 px-4 py-2 rounded-md hover:bg-gray-800"
+                  ? "flex items-center my-6 px-4 py-2 rounded-md hover:bg-hoverLight"
+                  : "flex items-center my-6 px-4 py-2 rounded-md hover:bg-hoverDark"
               }
             >
               <img
@@ -81,8 +81,8 @@ const SideMenu = (props) => {
                 <li
                   className={
                     lightMode
-                      ? "my-2 hover:bg-gray-100 rounded-md"
-                      : "my-2 hover:bg-zinc-900 rounded-md"
+                      ? "my-2 hover:bg-hoverLight rounded-md"
+                      : "my-2 hover:bg-hoverDark rounded-md"
                   }
                 >
                   <Link
@@ -105,8 +105,8 @@ const SideMenu = (props) => {
                 <li
                   className={
                     lightMode
-                      ? "my-2 hover:bg-gray-100 rounded-md  flex items-center justify-between cursor-pointer"
-                      : "my-2 hover:bg-zinc-900 rounded-md  flex items-center justify-between cursor-pointer"
+                      ? "my-2 hover:bg-hoverLight rounded-md  flex items-center justify-between cursor-pointer"
+                      : "my-2 hover:bg-hoverDark rounded-md  flex items-center justify-between cursor-pointer"
                   }
                   onClick={() => {
                     setCategoriesShown(!categoriesShown);
@@ -189,7 +189,7 @@ const SideMenu = (props) => {
                       onClick={() => {
                         setShowNewCategoryModal(true);
                       }}
-                      className="flex items-center gap-4 hover:bg-gray-100 w-5/6 py-2 px-4 rounded-lg ml-6 cursor-pointer"
+                      className={lightMode ? "flex items-center gap-4 hover:bg-hoverLight w-5/6 py-2 px-4 rounded-lg ml-6 cursor-pointer" : "flex items-center gap-4 hover:bg-hoverDark w-5/6 py-2 px-4 rounded-lg ml-6 cursor-pointer"}
                     >
                       <div
                         className="h-5 w-5 rounded-lg"
@@ -207,12 +207,12 @@ const SideMenu = (props) => {
                 <li
                   className={
                     lightMode
-                      ? "my-2 hover:bg-gray-100 rounded-md"
-                      : "my-2 hover:bg-zinc-900 rounded-md"
+                      ? "my-2 hover:bg-hoverLight rounded-md"
+                      : "my-2 hover:bg-hoverDark rounded-md"
                   }
                 >
                   <Link
-                    to="#"
+                    to="/favorites"
                     className="flex items-center font-header text-xl "
                     style={{ color: lightMode ? light.text : dark.text }}
                   >

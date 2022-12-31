@@ -51,6 +51,7 @@ export const TasksProvider = ({ children }) => {
 
   const getFavoriteTasks = () => {
     if (currentUser) {
+      // setIsLoading(true);
       const unsubscribe = onSnapshot(
         query(
           collection(firestore, "users", currentUser.uid, "tasks"),
@@ -62,6 +63,7 @@ export const TasksProvider = ({ children }) => {
           querySnapshot.forEach((doc) => {
             setFavTasks((prev) => [...prev, doc]);
           });
+          // setIsLoading(false);
         }
       );
 
@@ -70,7 +72,7 @@ export const TasksProvider = ({ children }) => {
   };
 
   const addTask = (body, datetime, category) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     addDoc(collection(firestore, "users", currentUser.uid, "tasks"), {
       body: body,
       datetime: datetime,
@@ -79,17 +81,17 @@ export const TasksProvider = ({ children }) => {
       category: category,
     })
       .then((res) => {
-        setIsLoading(false);
+        // setIsLoading(false);
       })
       .catch((error) => {
         setError(error.code);
-        setIsLoading(false);
+        // setIsLoading(false);
       });
   };
 
   const updateTask = (task, done, category, favorite) => {
     console.log(done, category, favorite);
-    setIsLoading(true);
+    // setIsLoading(true);
     setDoc(doc(firestore, "users", currentUser.uid, "tasks", task.id), {
       body: task.data().body,
       datetime: task.data().datetime,
@@ -98,26 +100,26 @@ export const TasksProvider = ({ children }) => {
       favorite: favorite===null ? task.data().favorite : favorite,
     })
       .then((res) => {
-        setIsLoading(false);
+        // setIsLoading(false);
         console.log("document updated");
       })
       .catch((error) => {
-        setIsLoading(false);
+        // setIsLoading(false);
         setError(error.code);
         console.log(error.code);
       });
   };
 
   const deleteTask = (taskID) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     deleteDoc(doc(firestore, "users", currentUser.uid, "tasks", taskID))
       .then((res) => {
         console.log("task deleted");
-        setIsLoading(false);
+        // setIsLoading(false);
       })
       .catch((error) => {
         setError(error.code);
-        setIsLoading(false);
+        // setIsLoading(false);
       });
   };
 
@@ -138,17 +140,17 @@ export const TasksProvider = ({ children }) => {
   };
 
   const addCategory = (name, color) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     setDoc(doc(firestore, "users", currentUser.uid, "categories", name), {
       name: name,
       color: color,
     })
       .then((res) => {
-        setIsLoading(false);
+        // setIsLoading(false);
       })
       .catch((error) => {
         setError(error.code);
-        setIsLoading(false);
+        // setIsLoading(false);
       });
   };
 
