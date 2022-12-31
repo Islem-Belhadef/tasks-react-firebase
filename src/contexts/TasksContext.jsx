@@ -51,7 +51,6 @@ export const TasksProvider = ({ children }) => {
 
   const getFavoriteTasks = () => {
     if (currentUser) {
-      // setIsLoading(true);
       const unsubscribe = onSnapshot(
         query(
           collection(firestore, "users", currentUser.uid, "tasks"),
@@ -63,7 +62,6 @@ export const TasksProvider = ({ children }) => {
           querySnapshot.forEach((doc) => {
             setFavTasks((prev) => [...prev, doc]);
           });
-          // setIsLoading(false);
         }
       );
 
@@ -72,7 +70,6 @@ export const TasksProvider = ({ children }) => {
   };
 
   const addTask = (body, datetime, category) => {
-    // setIsLoading(true);
     addDoc(collection(firestore, "users", currentUser.uid, "tasks"), {
       body: body,
       datetime: datetime,
@@ -81,17 +78,14 @@ export const TasksProvider = ({ children }) => {
       category: category,
     })
       .then((res) => {
-        // setIsLoading(false);
       })
       .catch((error) => {
         setError(error.code);
-        // setIsLoading(false);
       });
   };
 
   const updateTask = (task, done, category, favorite) => {
     console.log(done, category, favorite);
-    // setIsLoading(true);
     setDoc(doc(firestore, "users", currentUser.uid, "tasks", task.id), {
       body: task.data().body,
       datetime: task.data().datetime,
@@ -100,26 +94,21 @@ export const TasksProvider = ({ children }) => {
       favorite: favorite===null ? task.data().favorite : favorite,
     })
       .then((res) => {
-        // setIsLoading(false);
         console.log("document updated");
       })
       .catch((error) => {
-        // setIsLoading(false);
         setError(error.code);
         console.log(error.code);
       });
   };
 
   const deleteTask = (taskID) => {
-    // setIsLoading(true);
     deleteDoc(doc(firestore, "users", currentUser.uid, "tasks", taskID))
       .then((res) => {
         console.log("task deleted");
-        // setIsLoading(false);
       })
       .catch((error) => {
         setError(error.code);
-        // setIsLoading(false);
       });
   };
 
@@ -140,17 +129,14 @@ export const TasksProvider = ({ children }) => {
   };
 
   const addCategory = (name, color) => {
-    // setIsLoading(true);
     setDoc(doc(firestore, "users", currentUser.uid, "categories", name), {
       name: name,
       color: color,
     })
       .then((res) => {
-        // setIsLoading(false);
       })
       .catch((error) => {
         setError(error.code);
-        // setIsLoading(false);
       });
   };
 
@@ -162,8 +148,7 @@ export const TasksProvider = ({ children }) => {
     getCategories();
     getTasks();
     getFavoriteTasks();
-    console.log("favorite tasks : ",favTasks);
-  }, []);
+  }, [currentUser]);
 
   const value = {
     isLoading,
@@ -171,7 +156,6 @@ export const TasksProvider = ({ children }) => {
     tasks,
     categories,
     favTasks,
-    getTasks,
     addTask,
     updateTask,
     deleteTask,

@@ -29,7 +29,7 @@ const Favorites = () => {
       className="md:flex md:h-screen"
       style={{ backgroundColor: lightMode ? light.wall : dark.wall }}
     >
-      <SideMenu />
+      <SideMenu page="favorites"/>
       <div
         className="w-full m-2 rounded-2xl overflow-y-scroll"
         style={{

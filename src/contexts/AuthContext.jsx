@@ -29,6 +29,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
+
   const [currentUser, setCurrentUser] = useState();
 
   const [userLoading, setUserLoading] = useState(true);
@@ -190,7 +191,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
         setCurrentUser(user);
         setUserLoading(false);
       } else {

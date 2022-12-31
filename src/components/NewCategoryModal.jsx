@@ -14,6 +14,7 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
     e.preventDefault();
 
     addCategory(name.toLowerCase(), color);
+    setShowNewCategoryModal(false);
   };
 
   return (

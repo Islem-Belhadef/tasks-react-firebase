@@ -32,14 +32,6 @@ const Tasks = () => {
   const [category, setCategory] = useState("");
   const [datetime, setDatetime] = useState(now);
 
-  const getLatestTasks = () => {
-    //
-  };
-
-  const createNewTask = () => {
-    //
-  };
-
   const handleAddTask = (e) => {
     addTask(body, datetime, category);
   };
@@ -53,7 +45,7 @@ const Tasks = () => {
       className="md:flex md:h-screen"
       style={{ backgroundColor: lightMode ? light.wall : dark.wall }}
     >
-      <SideMenu />
+      <SideMenu page="tasks"/>
       <div
         className="w-full m-2 rounded-2xl overflow-y-scroll"
         style={{

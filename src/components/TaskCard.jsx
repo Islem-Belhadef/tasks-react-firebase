@@ -201,7 +201,7 @@ const TaskCard = ({ task }) => {
               }}
             >
               <img src={heart_blue} alt="heart" className="w-4 mr-3" />
-              <p className="text-accent font-medium ">Add to favorites</p>
+              <p className="font-medium" style={{color: light.primary}}>Add to favorites</p>
             </div>}
             {task.data().favorite === true && <div
               className="rounded-lg mx-2 py-2 px-4 flex justify-center items-center cursor-pointer"
