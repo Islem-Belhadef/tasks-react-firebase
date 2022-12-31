@@ -2,6 +2,9 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 
+// Libraries
+import { motion } from "framer-motion";
+
 // Contexts
 import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";
@@ -33,6 +36,7 @@ const Tasks = () => {
   const [datetime, setDatetime] = useState(now);
 
   const handleAddTask = (e) => {
+    e.preventDefault();
     addTask(body, datetime, category);
   };
 
@@ -45,7 +49,7 @@ const Tasks = () => {
       className="md:flex md:h-screen"
       style={{ backgroundColor: lightMode ? light.wall : dark.wall }}
     >
-      <SideMenu page="tasks"/>
+      <SideMenu page="tasks" />
       <div
         className="w-full m-2 rounded-2xl overflow-y-scroll"
         style={{
@@ -76,7 +80,7 @@ const Tasks = () => {
                 id="task"
                 maxLength="100"
                 placeholder="New task.."
-                className="mx-5 py-2 w-4/6 bg-transparent focus:outline-none"
+                className="mx-5 py-2 w-4/6 bg-transparent focus:outline-none font-body"
                 required
                 value={body}
                 onChange={(e) => {
@@ -157,9 +161,18 @@ const Tasks = () => {
               </h3>
             </div>
           )}
-          {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
-          ))}
+          {tasks.map((task, i) => {
+            return (
+              <motion.div
+              key={task.id} 
+                className="w-full"
+                initial={{ y: -i*100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+              >
+                <TaskCard task={task} />
+              </motion.div>
+            );
+          })}
           <div className="h-10"></div>
         </div>
       </div>

@@ -3,14 +3,13 @@ import { useAuth } from "../contexts/AuthContext";
 import { useTheme } from "../contexts/ThemeContext";
 
 const LogoutModal = ({ setShowLogoutModal }) => {
+  const { lightMode, light, dark } = useTheme();
+  const { logout } = useAuth();
 
-    const { lightMode, light, dark } = useTheme();
-    const { logout } = useAuth();
-
-    const handleLogout = (e) => {
-        e.preventDefault();
-        logout();
-      };
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logout();
+  };
 
   return (
     <div
@@ -22,8 +21,14 @@ const LogoutModal = ({ setShowLogoutModal }) => {
         style={{ backgroundColor: lightMode ? light.wall : dark.wall }}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
+        exit={{ scale: 0 }}
       >
-        <h3 className="text-xl font-medium mb-6" style={{color: lightMode ? light.text : dark.text}}>Proceed to logout ?</h3>
+        <h3
+          className="text-xl font-medium mb-6"
+          style={{ color: lightMode ? light.text : dark.text }}
+        >
+          Are you sure you want to logout ?
+        </h3>
         <form
           onSubmit={(e) => {
             handleLogout(e);
@@ -31,7 +36,7 @@ const LogoutModal = ({ setShowLogoutModal }) => {
           className="flex flex-col gap-6"
           autoComplete="off"
         >
-          <div className="flex gap-6">
+          <div className="flex gap-6 justify-center">
             <button
               onClick={() => {
                 setShowLogoutModal(false);

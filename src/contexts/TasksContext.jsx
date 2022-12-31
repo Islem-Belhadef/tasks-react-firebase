@@ -10,7 +10,8 @@ import {
   deleteDoc,
   onSnapshot,
   query,
-  where
+  where,
+  getDocs,
 } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 
@@ -54,7 +55,7 @@ export const TasksProvider = ({ children }) => {
       const unsubscribe = onSnapshot(
         query(
           collection(firestore, "users", currentUser.uid, "tasks"),
-          where('favorite', '==', true),
+          where("favorite", "==", true),
           orderBy("datetime", "desc")
         ),
         (querySnapshot) => {
@@ -77,36 +78,29 @@ export const TasksProvider = ({ children }) => {
       done: false,
       category: category,
     })
-      .then((res) => {
-      })
+      .then((res) => {})
       .catch((error) => {
         setError(error.code);
       });
   };
 
   const updateTask = (task, done, category, favorite) => {
-    console.log(done, category, favorite);
     setDoc(doc(firestore, "users", currentUser.uid, "tasks", task.id), {
       body: task.data().body,
       datetime: task.data().datetime,
-      category: category===null ? task.data().category : category,
-      done: done===null ? task.data().done : done,
-      favorite: favorite===null ? task.data().favorite : favorite,
+      category: category === null ? task.data().category : category,
+      done: done === null ? task.data().done : done,
+      favorite: favorite === null ? task.data().favorite : favorite,
     })
-      .then((res) => {
-        console.log("document updated");
-      })
+      .then((res) => {})
       .catch((error) => {
         setError(error.code);
-        console.log(error.code);
       });
   };
 
   const deleteTask = (taskID) => {
     deleteDoc(doc(firestore, "users", currentUser.uid, "tasks", taskID))
-      .then((res) => {
-        console.log("task deleted");
-      })
+      .then((res) => {})
       .catch((error) => {
         setError(error.code);
       });
@@ -128,20 +122,107 @@ export const TasksProvider = ({ children }) => {
     }
   };
 
+  const updateCategory = (oldName, newName, color) => {
+    console.log(oldName, newName, color);
+
+    if (oldName === newName) {
+      setDoc(doc(firestore, "users", currentUser.uid, "categories", newName), {
+        name: newName,
+        color: color,
+      })
+        .then((res) => {
+          console.log("category color updated successfully");
+        })
+        .catch((error) => {
+          console.log("error when category color updated");
+        });
+    }
+    else {
+      setDoc(doc(firestore, "users", currentUser.uid, "categories", newName), {
+        name: newName,
+        color: color,
+      })
+        .then(() => {
+          getDocs(
+            query(
+              collection(firestore, "users", currentUser.uid, "tasks"),
+              where("category", "==", oldName)
+            )
+          )
+            .then((querySnapshot) => {
+              const taskDocs = [];
+              querySnapshot.forEach((doc) => {
+                taskDocs.push(doc);
+              });
+              taskDocs.forEach((task) => {
+                setDoc(
+                  doc(firestore, "users", currentUser.uid, "tasks", task.id),
+                  {
+                    body: task.data().body,
+                    category: newName,
+                    done: task.data().done,
+                    favorite: task.data().favorite,
+                    datetime: task.data().datetime,
+                  }
+                );
+              });
+              deleteDoc(
+                doc(firestore, "users", currentUser.uid, "categories", oldName)
+              );
+            })
+            .catch((err) => {
+              setError(err);
+            });
+        })
+        .catch((err) => {
+          setError(err);
+        });
+    }
+  };
+
   const addCategory = (name, color) => {
     setDoc(doc(firestore, "users", currentUser.uid, "categories", name), {
       name: name,
       color: color,
     })
-      .then((res) => {
-      })
+      .then((res) => {})
       .catch((error) => {
         setError(error.code);
       });
   };
 
-  const deleteCategory = () => {
-    //
+  const deleteCategory = (name) => {
+
+    getDocs(
+      query(
+        collection(firestore, "users", currentUser.uid, "tasks"),
+        where("category", "==", name)
+      )
+    )
+      .then((querySnapshot) => {
+        const taskDocs = [];
+        querySnapshot.forEach((doc) => {
+          taskDocs.push(doc);
+        });
+        taskDocs.forEach((task) => {
+          setDoc(
+            doc(firestore, "users", currentUser.uid, "tasks", task.id),
+            {
+              body: task.data().body,
+              category: "",
+              done: task.data().done,
+              favorite: task.data().favorite,
+              datetime: task.data().datetime,
+            }
+          );
+        });
+        deleteDoc(
+          doc(firestore, "users", currentUser.uid, "categories", name)
+        );
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
 
   useEffect(() => {
@@ -158,6 +239,7 @@ export const TasksProvider = ({ children }) => {
     favTasks,
     addTask,
     updateTask,
+    updateCategory,
     deleteTask,
     addCategory,
     deleteCategory,

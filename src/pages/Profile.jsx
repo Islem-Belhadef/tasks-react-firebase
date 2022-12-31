@@ -1,5 +1,5 @@
 // React & Router
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
 
 // Contexts
@@ -10,23 +10,11 @@ import { useTheme } from "../contexts/ThemeContext";
 import SideMenu from "../components/SideMenu";
 
 const Profile = () => {
-  const { currentUser, isLoading } = useAuth();
+  const { currentUser } = useAuth();
   const { lightMode, light, dark } = useTheme();
 
   const [name, setName] = useState(currentUser.displayName);
   const [email, setEmail] = useState(currentUser.email);
-  const [password, setPassword] = useState("");
-
-  const getUserInfo = () => {
-    //
-  };
-
-  const handleUpdateProfile = (e) => {
-    e.preventDefault();
-    //
-  };
-
-  useEffect(() => {}, []);
 
   if (!currentUser) {
     return <Navigate to="/login" />;

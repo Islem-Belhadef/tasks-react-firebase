@@ -19,13 +19,11 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-
     login(email, password);
   };
 
   const handleLoginWithGoogle = (e) => {
     e.preventDefault();
-
     loginWithGoogle();
   };
 

@@ -1,6 +1,6 @@
 // React & Router
 import { useState, useRef } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Contexts
 import { useAuth } from "../contexts/AuthContext";
@@ -15,10 +15,7 @@ const Signup = () => {
   const {
     signup,
     isLoading,
-    setIsLoading,
     error,
-    setError,
-    currentUser,
     loginWithGoogle,
   } = useAuth();
 
@@ -39,14 +36,12 @@ const Signup = () => {
 
   const handleContinue = (e) => {
     e.preventDefault();
-
     firstPage.current.style.display = "none";
     secondPage.current.style.display = "block";
   };
 
   const handleSignup = (e) => {
     e.preventDefault();
-
     signup(email, password, name, pfp, profilePicture);
   };
 

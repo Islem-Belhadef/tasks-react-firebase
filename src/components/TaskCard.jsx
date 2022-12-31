@@ -13,7 +13,7 @@ import { useTasks } from "../contexts/TasksContext";
 
 const TaskCard = ({ task }) => {
   const { lightMode, light, dark } = useTheme();
-  const { tasks, categories, deleteTask, updateTask } = useTasks();
+  const { categories, updateTask, deleteTask } = useTasks();
 
   const [taskCategory, setTaskCategory] = useState(task.data().category);
   const [favorite, setFavorite] = useState(task.data().favorite);
@@ -44,29 +44,22 @@ const TaskCard = ({ task }) => {
     return obj.name === task.data().category;
   });
 
-  const handleDeleteTask = () => {
-    deleteTask(task.id);
-  };
-
-  // const addFav = () => {
-  //   updateTask(task, null, null, true);
-  // };
-
-  // const removeFav = () => {
-  //   updateTask(task, null, null, false);
-  // };
-
   const toggleFav = () => {
     updateTask(task, null, null, !favorite);
-  }
+  };
 
   const toggleDone = () => {
     updateTask(task, !done, null, null);
-  }
+  };
 
   const changeCategory = (cat) => {
     updateTask(task, null, cat, null);
-  }
+  };
+
+  const handleDeleteTask = (e) => {
+    e.preventDefault();
+    deleteTask(task.id);
+  };
 
   return (
     <div
@@ -101,11 +94,8 @@ const TaskCard = ({ task }) => {
             className="mx-5 py-2"
             style={{ color: lightMode ? light.text : dark.text }}
           >
-            {/* {task.data().datetime} */}
             {taskDate.getDate() === today
-              ? taskDate.getHours()+
-                ":" +
-                taskDate.getMinutes()
+              ? taskDate.getHours() + ":" + taskDate.getMinutes()
               : months[taskDate.getMonth()] +
                 " " +
                 (taskDate.getDate() < 10
@@ -192,32 +182,38 @@ const TaskCard = ({ task }) => {
                 </option>
               ))}
             </select>
-            {task.data().favorite === false && <div
-              className="rounded-lg mx-2 py-2 px-4 flex justify-center items-center cursor-pointer"
-              style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
-              onClick={() => {
-                setFavorite(!favorite);
-                toggleFav();
-              }}
-            >
-              <img src={heart_blue} alt="heart" className="w-4 mr-3" />
-              <p className="font-medium" style={{color: light.primary}}>Add to favorites</p>
-            </div>}
-            {task.data().favorite === true && <div
-              className="rounded-lg mx-2 py-2 px-4 flex justify-center items-center cursor-pointer"
-              style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
-              onClick={() => {
-                setFavorite(!favorite);
-                toggleFav();
-              }}
-            >
-              <img src={heart_red} alt="heart" className="w-4 mr-3" />
-              <p className="text-red-500 font-medium ">Remove favorite</p>
-            </div>}
+            {task.data().favorite === false && (
+              <div
+                className="rounded-lg mx-2 py-2 px-4 flex justify-center items-center cursor-pointer"
+                style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
+                onClick={() => {
+                  setFavorite(!favorite);
+                  toggleFav();
+                }}
+              >
+                <img src={heart_blue} alt="heart" className="w-4 mr-3" />
+                <p className="font-medium" style={{ color: light.primary }}>
+                  Add to favorites
+                </p>
+              </div>
+            )}
+            {task.data().favorite === true && (
+              <div
+                className="rounded-lg mx-2 py-2 px-4 flex justify-center items-center cursor-pointer"
+                style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
+                onClick={() => {
+                  setFavorite(!favorite);
+                  toggleFav();
+                }}
+              >
+                <img src={heart_red} alt="heart" className="w-4 mr-3" />
+                <p className="text-red-500 font-medium ">Remove favorite</p>
+              </div>
+            )}
             <div
               className="rounded-lg ml-2 py-2 px-4 flex justify-center items-center cursor-pointer"
               style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
-              onClick={handleDeleteTask}
+              onClick={(e)=>{handleDeleteTask(e)}}
             >
               <img src={trash} alt="trash" className="w-4 mr-3" />
               <p className="text-red-500 font-medium ">Delete</p>

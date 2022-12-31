@@ -27,6 +27,7 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
         style={{ backgroundColor: lightMode ? light.wall : dark.wall }}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
+        exit={{ scale: 0 }}
       >
         <form
           onSubmit={(e) => {
@@ -35,7 +36,11 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
           className="flex flex-col gap-6"
           autoComplete="off"
         >
-          <label htmlFor="name" className="flex items-center gap-4" style={{color: lightMode?light.text:dark.text}}>
+          <label
+            htmlFor="name"
+            className="flex items-center gap-4"
+            style={{ color: lightMode ? light.text : dark.text }}
+          >
             Category label
             <input
               type="text"
@@ -55,7 +60,11 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
               }}
             />
           </label>
-          <label htmlFor="color" className="flex items-center gap-4" style={{color: lightMode?light.text:dark.text}}>
+          <label
+            htmlFor="color"
+            className="flex items-center gap-4"
+            style={{ color: lightMode ? light.text : dark.text }}
+          >
             Category color
             <input
               type="color"

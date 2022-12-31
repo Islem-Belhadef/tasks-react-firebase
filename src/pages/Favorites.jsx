@@ -1,6 +1,8 @@
 // React & Router
-import { useState } from "react";
 import { Navigate } from "react-router-dom";
+
+// Libraries
+import { motion } from "framer-motion";
 
 // Contexts
 import { useAuth } from "../contexts/AuthContext";
@@ -16,10 +18,6 @@ const Favorites = () => {
   const { lightMode, light, dark } = useTheme();
   const { favTasks } = useTasks();
 
-  const handleAddTask = (e) => {
-    addTask(body, datetime, category);
-  };
-
   if (!currentUser) {
     return <Navigate to="/login" />;
   }
@@ -29,7 +27,7 @@ const Favorites = () => {
       className="md:flex md:h-screen"
       style={{ backgroundColor: lightMode ? light.wall : dark.wall }}
     >
-      <SideMenu page="favorites"/>
+      <SideMenu page="favorites" />
       <div
         className="w-full m-2 rounded-2xl overflow-y-scroll"
         style={{
@@ -41,7 +39,7 @@ const Favorites = () => {
             className="text-5xl font-body font-bold mt-20 mb-10"
             style={{ color: lightMode ? light.header : dark.header }}
           >
-             Favorite tasks
+            Favorite tasks
           </h1>
           {favTasks.length === 0 && (
             <div>
@@ -50,8 +48,15 @@ const Favorites = () => {
               </h3>
             </div>
           )}
-          {favTasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+          {favTasks.map((task, i) => (
+            <motion.div
+              key={task.id}
+              className="w-full"
+              initial={{ y: -i * 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+            >
+              <TaskCard task={task} />
+            </motion.div>
           ))}
           <div className="h-10"></div>
         </div>
