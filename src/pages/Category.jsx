@@ -10,17 +10,22 @@ import { useTasks } from "../contexts/TasksContext";
 // Components
 import SideMenu from "../components/SideMenu";
 import TaskCard from "../components/TaskCard";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, query, collection, where, orderBy } from "firebase/firestore";
 import { firestore } from "../config/FirebaseClient";
 
 const Category = () => {
   const { currentUser } = useAuth();
   const { lightMode, light, dark } = useTheme();
-  const { categories, tasks, addTask, isLoading, getCategory } = useTasks();
+  const { tasks, addTask} = useTasks();
 
   const { name } = useParams();
 
+  const [body, setBody] = useState("");
+  const [category, setCategory] = useState("");
+  const [categoryTasks, setCategoryTasks] = useState([]);
+
   useEffect(() => {
+    // getting the category
     getDoc(doc(firestore, "users", currentUser.uid, "categories", name))
       .then((doc) => {
         setCategory(doc.data());
@@ -30,7 +35,24 @@ const Category = () => {
         //   setError(error.code);
         console.log(error.code);
       });
-  }, []);
+
+      // getting category's tasks
+      const unsubscribe = onSnapshot(
+        query(
+          collection(firestore, "users", currentUser.uid, "tasks"),
+          where("category", "==", name),
+          orderBy("datetime", "desc")
+        ),
+        (querySnapshot) => {
+          setCategoryTasks([]);
+          querySnapshot.forEach((doc) => {
+            setCategoryTasks((prev) => [...prev, doc]);
+          });
+        }
+      );
+
+      return unsubscribe;
+  }, [name]);
 
   const date = new Date();
   const now =
@@ -44,8 +66,6 @@ const Category = () => {
     ":" +
     date.getMinutes();
 
-  const [body, setBody] = useState("");
-  const [category, setCategory] = useState("");
   const [datetime, setDatetime] = useState(now);
 
   const getLatestTasks = () => {
@@ -124,7 +144,13 @@ const Category = () => {
                   }}
                 />
               </div>
-              <div className="rounded-lg ml-3 py-2 px-4 font-medium">
+              <div
+                className="rounded-lg ml-3 py-2 px-4 font-medium"
+                style={{
+                  color: lightMode ? light.primary : dark.text,
+                  backgroundColor: lightMode ? light.btn : dark.btn,
+                }}
+              >
                 {category.name}
               </div>
               <button
@@ -143,16 +169,16 @@ const Category = () => {
             className="text-3xl font-body font-bold text-left w-full mt-20 mb-4"
             style={{ color: lightMode ? light.header : dark.header }}
           >
-            Recent tasks
+            {name} tasks
           </h2>
-          {tasks.length === 0 && (
+          {categoryTasks.length === 0 && (
             <div>
               <h3 className="text-xl font-body font-semibold w-full mt-6 text-white">
-                You don't have any tasks 👏
+                You don't have any {name} tasks 👏
               </h3>
             </div>
           )}
-          {tasks.map((task) => (
+          {categoryTasks.map((task) => (
             <TaskCard key={task.id} task={task} />
           ))}
           <div className="h-10"></div>

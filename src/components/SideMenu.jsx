@@ -37,8 +37,7 @@ const SideMenu = (props) => {
 
   const changeTheme = () => {
     setLightMode(!lightMode);
-    window.localStorage.setItem("lightMode", lightMode);
-    console.log(lightMode);
+    window.localStorage.setItem("lightMode", !lightMode);
   };
 
   const handleLogout = (e) => {

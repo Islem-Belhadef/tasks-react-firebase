@@ -46,7 +46,7 @@ const Profile = () => {
       >
         <div className="flex flex-col justify-center w-2/3 m-auto h-full">
           <h1 className="text-5xl font-body font-bold" style={{ color: lightMode ? light.header : dark.header }}>
-            Edit profile
+            profile
           </h1>
           <img
             src={currentUser.photoURL}
@@ -64,6 +64,7 @@ const Profile = () => {
                 type="text"
                 name="name"
                 id="name"
+                disabled
                 className="py-2 px-4 rounded-lg focus:outline-none font-normal"
                 style={{ backgroundColor: lightMode ? light.card : dark.card, color: lightMode ? light.text : dark.text }}
                 value={name}
@@ -82,6 +83,7 @@ const Profile = () => {
                 type="email"
                 name="email"
                 id="email"
+                disabled
                 className="py-2 px-4 rounded-lg focus:outline-none font-normal"
                 style={{ backgroundColor: lightMode ? light.card : dark.card, color: lightMode ? light.text : dark.text }}
                 value={email}
@@ -90,7 +92,7 @@ const Profile = () => {
                 }}
               />
             </label>
-            <div className="flex justify-center items-center gap-12 pt-6">
+            {/* <div className="flex justify-center items-center gap-12 pt-6">
               <button
                 type="reset"
                 className="py-3 w-40 border border-solid border-white rounded-lg text-lg font-medium"
@@ -105,7 +107,7 @@ const Profile = () => {
               >
                 Save
               </button>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>

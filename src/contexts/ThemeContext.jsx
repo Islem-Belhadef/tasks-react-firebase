@@ -40,8 +40,8 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     if (window.localStorage.getItem("lightMode") != null) {
-      setLightMode(window.localStorage.getItem("lightMode"));
-      console.log(lightMode);
+      const theme = JSON.parse(window.localStorage.getItem("lightMode"));
+      setLightMode(theme);
     }
     else window.localStorage.setItem("lightMode", lightMode);
   }, []);

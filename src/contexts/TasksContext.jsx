@@ -3,15 +3,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { firestore } from "../config/FirebaseClient";
 import {
   doc,
-  getDoc,
   collection,
-  getDocs,
   addDoc,
   setDoc,
   orderBy,
   deleteDoc,
   onSnapshot,
   query,
+  where
 } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
 
@@ -28,8 +27,8 @@ export const TasksProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   const [tasks, setTasks] = useState([]);
+  const [favTasks, setFavTasks] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState(null);
 
   const getTasks = () => {
     if (currentUser) {
@@ -42,6 +41,26 @@ export const TasksProvider = ({ children }) => {
           setTasks([]);
           querySnapshot.forEach((doc) => {
             setTasks((prev) => [...prev, doc]);
+          });
+        }
+      );
+
+      return unsubscribe;
+    }
+  };
+
+  const getFavoriteTasks = () => {
+    if (currentUser) {
+      const unsubscribe = onSnapshot(
+        query(
+          collection(firestore, "users", currentUser.uid, "tasks"),
+          where('favorite', '==', true),
+          orderBy("datetime", "desc")
+        ),
+        (querySnapshot) => {
+          setFavTasks([]);
+          querySnapshot.forEach((doc) => {
+            setFavTasks((prev) => [...prev, doc]);
           });
         }
       );
@@ -74,9 +93,9 @@ export const TasksProvider = ({ children }) => {
     setDoc(doc(firestore, "users", currentUser.uid, "tasks", task.id), {
       body: task.data().body,
       datetime: task.data().datetime,
-      category: category,
-      done: done,
-      favorite: favorite,
+      category: category===null ? task.data().category : category,
+      done: done===null ? task.data().done : done,
+      favorite: favorite===null ? task.data().favorite : favorite,
     })
       .then((res) => {
         setIsLoading(false);
@@ -118,19 +137,6 @@ export const TasksProvider = ({ children }) => {
     }
   };
 
-  const getCategory = (name) => {
-    setIsLoading(true);
-    getDoc(doc(firestore, "users", currentUser.uid, "categories", name))
-    .then((doc) => {
-      setCategory(doc.data());
-      setIsLoading(false);
-    })
-    .catch((error) => {
-      setError(error.code);
-      setIsLoading(false);
-    })
-  }
-
   const addCategory = (name, color) => {
     setIsLoading(true);
     setDoc(doc(firestore, "users", currentUser.uid, "categories", name), {
@@ -153,6 +159,8 @@ export const TasksProvider = ({ children }) => {
   useEffect(() => {
     getCategories();
     getTasks();
+    getFavoriteTasks();
+    console.log("favorite tasks : ",favTasks);
   }, []);
 
   const value = {
@@ -160,7 +168,7 @@ export const TasksProvider = ({ children }) => {
     error,
     tasks,
     categories,
-    getCategory,
+    favTasks,
     getTasks,
     addTask,
     updateTask,

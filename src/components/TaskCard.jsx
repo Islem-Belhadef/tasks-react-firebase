@@ -5,7 +5,8 @@ import { motion } from "framer-motion";
 import dots from "../assets/icons/dots_blue.svg";
 import check_light from "../assets/icons/check_light.svg";
 import check_dark from "../assets/icons/check_dark.svg";
-import heart from "../assets/icons/heart_blue.svg";
+import heart_blue from "../assets/icons/heart_blue.svg";
+import heart_red from "../assets/icons/heart_red.svg";
 import trash from "../assets/icons/trash.svg";
 import { useTheme } from "../contexts/ThemeContext";
 import { useTasks } from "../contexts/TasksContext";
@@ -37,8 +38,6 @@ const TaskCard = ({ task }) => {
 
   const taskDate = new Date(task.data().datetime);
 
-  // const ampm = taskDate.getHours >= 12 ? "PM" : "AM";
-
   const today = new Date().getDate();
 
   const category = categories.filter((obj) => {
@@ -49,10 +48,25 @@ const TaskCard = ({ task }) => {
     deleteTask(task.id);
   };
 
-  const handleUpdateTask = (e) => {
-    e.preventDefault();
-    updateTask(task, done, taskCategory, favorite);
-  };
+  // const addFav = () => {
+  //   updateTask(task, null, null, true);
+  // };
+
+  // const removeFav = () => {
+  //   updateTask(task, null, null, false);
+  // };
+
+  const toggleFav = () => {
+    updateTask(task, null, null, !favorite);
+  }
+
+  const toggleDone = () => {
+    updateTask(task, !done, null, null);
+  }
+
+  const changeCategory = (cat) => {
+    updateTask(task, null, cat, null);
+  }
 
   return (
     <div
@@ -112,12 +126,12 @@ const TaskCard = ({ task }) => {
             style={{
               backgroundColor: lightMode ? light.btn : dark.btn,
             }}
-            onClick={(e) => {
+            onClick={() => {
               setDone(!done);
-              handleUpdateTask(e);
+              toggleDone();
             }}
           >
-            {task.data().done && lightMode && (
+            {done && lightMode && (
               <motion.img
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -126,7 +140,7 @@ const TaskCard = ({ task }) => {
                 className="w-4"
               />
             )}
-            {task.data().done && !lightMode && (
+            {done && !lightMode && (
               <motion.img
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -161,8 +175,7 @@ const TaskCard = ({ task }) => {
               }}
               value={taskCategory}
               onChange={(e) => {
-                setTaskCategory(e.target.value);
-                handleUpdateTask(e);
+                changeCategory(e.target.value);
               }}
             >
               <option value="">category</option>
@@ -179,18 +192,28 @@ const TaskCard = ({ task }) => {
                 </option>
               ))}
             </select>
-            <div
+            {task.data().favorite === false && <div
               className="rounded-lg mx-2 py-2 px-4 flex justify-center items-center cursor-pointer"
               style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
-              onClick={(e) => {
+              onClick={() => {
                 setFavorite(!favorite);
-                console.log(favorite);
-                handleUpdateTask(e);
+                toggleFav();
               }}
             >
-              <img src={heart} alt="heart" className="w-4 mr-3" />
+              <img src={heart_blue} alt="heart" className="w-4 mr-3" />
               <p className="text-accent font-medium ">Add to favorites</p>
-            </div>
+            </div>}
+            {task.data().favorite === true && <div
+              className="rounded-lg mx-2 py-2 px-4 flex justify-center items-center cursor-pointer"
+              style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
+              onClick={() => {
+                setFavorite(!favorite);
+                toggleFav();
+              }}
+            >
+              <img src={heart_red} alt="heart" className="w-4 mr-3" />
+              <p className="text-red-500 font-medium ">Remove favorite</p>
+            </div>}
             <div
               className="rounded-lg ml-2 py-2 px-4 flex justify-center items-center cursor-pointer"
               style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
