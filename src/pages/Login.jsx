@@ -11,8 +11,7 @@ import ErrorModal from "../components/ErrorModal";
 import LoadingAnimation from "../components/LoadingAnimation";
 
 const Login = () => {
-  const navigate = useNavigate();
-
+  const { lightMode, light, dark } = useTheme();
   const { login, isLoading, error, loginWithGoogle } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -35,15 +34,28 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-primary">
-      <div className="rounded-xl py-8 px-12 bg-bg">
-        <h2 className="font-header text-2xl text-text font-semibold mb-1">
+    <div
+      className="h-screen w-full flex items-center justify-center"
+      style={{ backgroundColor: lightMode ? light.background : dark.wall }}
+    >
+      <div
+        className="rounded-xl py-8 px-12"
+        style={{ backgroundColor: lightMode ? light.wall : dark.background }}
+      >
+        <h2
+          className="font-header text-2xl font-semibold mb-1"
+          style={{ color: lightMode ? light.text : dark.text }}
+        >
           Welcome back
         </h2>
         <p className="font-body text-gray-400 text-sm">
           Login to your account to continue noting your tasks
         </p>
-        <Link to="/signup" className="font-body text-accent text-sm">
+        <Link
+          to="/signup"
+          className="font-body text-sm"
+          style={{ color: light.primary }}
+        >
           I don't have an account
         </Link>
         <form
@@ -56,7 +68,7 @@ const Login = () => {
             {error && <ErrorModal error={error} />}
             <label
               htmlFor="email"
-              className="font-medium text-gray-500 flex flex-col gap-2"
+              className={lightMode? "font-medium text-gray-500 flex flex-col gap-2": "font-medium text-gray-400 flex flex-col gap-2"}
             >
               Email Address
               <input
@@ -64,7 +76,8 @@ const Login = () => {
                 name="email"
                 id="email"
                 required
-                className="py-2 px-4 bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-200 text-text font-normal"
+                className="py-2 px-4 rounded-lg focus:outline-none font-normal"
+                style={{backgroundColor: lightMode ? light.btn : dark.btn,color: lightMode ? light.text : dark.text,}}
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -73,7 +86,11 @@ const Login = () => {
             </label>
             <label
               htmlFor="email"
-              className="font-medium text-gray-500 flex flex-col gap-2"
+              className={
+                lightMode
+                  ? "font-medium text-gray-500 flex flex-col gap-2"
+                  : "font-medium text-gray-400 flex flex-col gap-2"
+              }
             >
               Password
               <input
@@ -81,7 +98,11 @@ const Login = () => {
                 name="password"
                 id="password"
                 required
-                className="py-2 px-4 bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-200 text-text font-normal"
+                className="py-2 px-4 rounded-lg focus:outline-none font-normal"
+                style={{
+                  backgroundColor: lightMode ? light.btn : dark.btn,
+                  color: lightMode ? light.text : dark.text,
+                }}
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -90,7 +111,11 @@ const Login = () => {
             </label>
           </div>
           <div className="w-full flex justify-end">
-            <Link to="/login" className="text-xs text-accent py-2">
+            <Link
+              to="/login"
+              className="text-xs py-2"
+              style={{ color: light.primary }}
+            >
               Forgot your password?
             </Link>
           </div>
@@ -98,7 +123,8 @@ const Login = () => {
             {!isLoading && (
               <button
                 type="submit"
-                className="py-3 w-full bg-accent rounded-lg text-white text-lg font-medium"
+                className="py-3 w-full rounded-lg text-white text-lg font-medium"
+                style={{ backgroundColor: light.primary }}
               >
                 Sign in
               </button>
@@ -107,14 +133,16 @@ const Login = () => {
               <button
                 type="submit"
                 disabled
-                className="py-3 w-full bg-primary rounded-lg text-white text-lg font-medium"
+                className="py-3 w-full rounded-lg text-white text-lg font-medium"
+                style={{ backgroundColor: light.background }}
               >
                 <LoadingAnimation />
               </button>
             )}
             <button
               onClick={handleLoginWithGoogle}
-              className="py-3 w-full border border-solid border-accent rounded-lg text-accent text-lg font-medium"
+              className="py-3 w-full border border-solid rounded-lg text-lg font-medium"
+              style={{ borderColor: light.primary, color: light.primary }}
             >
               Sign in with Google
             </button>

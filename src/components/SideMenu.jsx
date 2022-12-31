@@ -1,6 +1,8 @@
-// Router
+// React & Router
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
+// Libraries
 import { motion } from "framer-motion";
 
 // Contexts
@@ -20,16 +22,17 @@ import arrow_down_dark from "../assets/icons/arrow_down_dark.svg";
 import moon from "../assets/icons/moon.svg";
 import sun from "../assets/icons/sun.svg";
 import user from "../assets/icons/user.svg";
-import { useState } from "react";
 import NewCategoryModal from "./NewCategoryModal";
+import LogoutModal from "./LogoutModal";
 
 const SideMenu = (props) => {
-  const { currentUser, logout } = useAuth();
+  const { currentUser } = useAuth();
   const { lightMode, setLightMode, light, dark } = useTheme();
   const { categories: tasksCategories } = useTasks();
 
   const [categoriesShown, setCategoriesShown] = useState(false);
   const [showNewCategoryModal, setShowNewCategoryModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const showCategories = () => {
     //
@@ -38,11 +41,6 @@ const SideMenu = (props) => {
   const changeTheme = () => {
     setLightMode(!lightMode);
     window.localStorage.setItem("lightMode", !lightMode);
-  };
-
-  const handleLogout = (e) => {
-    e.preventDefault();
-    logout();
   };
 
   return (
@@ -262,7 +260,8 @@ const SideMenu = (props) => {
             </div>
             <div
               onClick={(e) => {
-                handleLogout(e);
+                // handleLogout(e);
+                setShowLogoutModal(true);
               }}
               className="rounded-lg text-red-600 cursor-pointer p-3 w-full"
               style={{
@@ -277,6 +276,9 @@ const SideMenu = (props) => {
       {/* {showNewCategoryModal && <Overlay closeFunciton={setShowNewCategoryModal} child={<NewCategoryModal/>}/>} */}
       {showNewCategoryModal && (
         <NewCategoryModal setShowNewCategoryModal={setShowNewCategoryModal} />
+      )}
+      {showLogoutModal && (
+        <LogoutModal setShowLogoutModal={setShowLogoutModal} />
       )}
     </>
   );

@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
 
     if (imgState) {
-      if (imgRef.current.files[0].size < 4194304) {
+      if (imgRef.current.files[0].size < 2097152) {
         setIsLoading(true);
         const profilePictureRef = ref(storage, `profilePictures/${email}`);
         uploadBytes(profilePictureRef, imgState)
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
             setIsLoading(false);
           });
       } else {
-        setError("Image size too big! it should be less than 4 mb");
+        setError("Image size too big! it should be less than 2 mb");
         setIsLoading(false);
       }
     } else {

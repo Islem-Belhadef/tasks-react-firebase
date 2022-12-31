@@ -10,13 +10,21 @@ import { useTasks } from "../contexts/TasksContext";
 // Components
 import SideMenu from "../components/SideMenu";
 import TaskCard from "../components/TaskCard";
-import { doc, getDoc, onSnapshot, query, collection, where, orderBy } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  collection,
+  where,
+  orderBy,
+} from "firebase/firestore";
 import { firestore } from "../config/FirebaseClient";
 
 const Category = () => {
   const { currentUser } = useAuth();
   const { lightMode, light, dark } = useTheme();
-  const { tasks, addTask} = useTasks();
+  const { tasks, addTask } = useTasks();
 
   const { name } = useParams();
 
@@ -36,22 +44,22 @@ const Category = () => {
         console.log(error.code);
       });
 
-      // getting category's tasks
-      const unsubscribe = onSnapshot(
-        query(
-          collection(firestore, "users", currentUser.uid, "tasks"),
-          where("category", "==", name),
-          orderBy("datetime", "desc")
-        ),
-        (querySnapshot) => {
-          setCategoryTasks([]);
-          querySnapshot.forEach((doc) => {
-            setCategoryTasks((prev) => [...prev, doc]);
-          });
-        }
-      );
+    // getting category's tasks
+    const unsubscribe = onSnapshot(
+      query(
+        collection(firestore, "users", currentUser.uid, "tasks"),
+        where("category", "==", name),
+        orderBy("datetime", "desc")
+      ),
+      (querySnapshot) => {
+        setCategoryTasks([]);
+        querySnapshot.forEach((doc) => {
+          setCategoryTasks((prev) => [...prev, doc]);
+        });
+      }
+    );
 
-      return unsubscribe;
+    return unsubscribe;
   }, [name]);
 
   const date = new Date();
@@ -101,7 +109,8 @@ const Category = () => {
             className="text-5xl font-body font-bold mt-20 mb-10"
             style={{ color: lightMode ? light.header : dark.header }}
           >
-            What are your <span style={{color: category.color}}>{name}</span> tasks for today {currentUser.displayName}?
+            What are your <span style={{ color: category.color }}>{name}</span>{" "}
+            tasks for today {currentUser.displayName}?
           </h1>
           <form
             className="w-full flex justify-center"
@@ -165,15 +174,16 @@ const Category = () => {
               </button>
             </div>
           </form>
-          <h2
+          {/* <h2
             className="text-3xl font-body font-bold text-left w-full mt-20 mb-4"
             style={{ color: lightMode ? light.header : dark.header }}
           >
             {name} tasks
-          </h2>
+          </h2> */}
+          <div className="h-16"></div>
           {categoryTasks.length === 0 && (
             <div>
-              <h3 className="text-xl font-body font-semibold w-full mt-6 text-white">
+              <h3 className="text-xl font-body font-semibold w-full mt-4 text-white">
                 You don't have any {name} tasks 👏
               </h3>
             </div>

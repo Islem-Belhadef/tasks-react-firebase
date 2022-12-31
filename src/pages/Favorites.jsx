@@ -41,7 +41,7 @@ const Favorites = () => {
             className="text-5xl font-body font-bold mt-20 mb-10"
             style={{ color: lightMode ? light.header : dark.header }}
           >
-             Favorite tasks
+             Favorite tasks 💖
           </h1>
           {favTasks.length === 0 && (
             <div>
