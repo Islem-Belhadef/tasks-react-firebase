@@ -97,12 +97,12 @@ const Category = () => {
   const handleUpdateCategory = (e) => {
     e.preventDefault();
     updateCategory(oldLabel, label, color);
-  }
+  };
 
   const handleDeleteCategory = (e) => {
     e.preventDefault();
-    deleteCategory(oldLabel)
-  }
+    deleteCategory(oldLabel);
+  };
 
   if (!currentUser) {
     return <Navigate to="/login" />;
@@ -245,6 +245,7 @@ const Category = () => {
               <form
                 onSubmit={(e) => {
                   handleUpdateCategory(e);
+                  navigate("/");
                 }}
                 className="flex flex-col gap-6"
                 autoComplete="off"
@@ -297,10 +298,10 @@ const Category = () => {
                 </label>
                 <div className="flex gap-6">
                   <button
-                  onClick={(e) => {
-                    handleDeleteCategory(e);
-                    navigate('/');
-                  }}
+                    onClick={(e) => {
+                      handleDeleteCategory(e);
+                      navigate("/");
+                    }}
                     type="submit"
                     className="py-3 w-40 rounded-lg text-white bg-red-500 text-lg font-medium"
                   >
