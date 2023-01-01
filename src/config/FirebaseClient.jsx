@@ -5,7 +5,7 @@ import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  apiKey: "AIzaSyDw5XGn646tyh_Iozh8tzzNMFVqMC5NzCw",
   authDomain: "taskati-b8379.firebaseapp.com",
   projectId: "taskati-b8379",
   storageBucket: "taskati-b8379.appspot.com",
