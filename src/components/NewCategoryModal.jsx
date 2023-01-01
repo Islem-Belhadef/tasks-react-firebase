@@ -19,11 +19,11 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
 
   return (
     <div
-      className="h-screen w-screen bg flex items-center justify-center fixed z-10"
+      className="h-screen w-screen bg flex items-center justify-center fixed z-40"
       style={{ backgroundColor: "#000000e1" }}
     >
       <motion.div
-        className="p-6 rounded-lg fixed z-20"
+        className="p-6 rounded-lg fixed z-50 md:m-0 w-11/12 m-auto sm:w-fit"
         style={{ backgroundColor: lightMode ? light.wall : dark.wall }}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -38,7 +38,7 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
         >
           <label
             htmlFor="name"
-            className="flex items-center gap-4"
+            className="sm:flex items-center sm:gap-4"
             style={{ color: lightMode ? light.text : dark.text }}
           >
             Category label
@@ -53,7 +53,7 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
               onChange={(e) => {
                 setName(e.target.value);
               }}
-              className="py-2 px-4 rounded-lg focus:outline-none font-normal"
+              className="py-2 px-4 mt-2 block sm:mt-0 rounded-lg focus:outline-none font-normal w-full sm:w-fit"
               style={{
                 backgroundColor: lightMode ? light.btn : dark.btn,
                 color: lightMode ? light.text : dark.text,
@@ -87,7 +87,7 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
               onClick={() => {
                 setShowNewCategoryModal(false);
               }}
-              className="py-3 w-40 border border-solid rounded-lg text-lg font-medium"
+              className="py-3 w-40 border border-solid rounded-lg sm:text-lg font-medium"
               style={{
                 color: lightMode ? light.primary : dark.text,
                 borderColor: lightMode ? light.primary : dark.text,
@@ -97,7 +97,7 @@ const NewCategoryModal = ({ setShowNewCategoryModal }) => {
             </button>
             <button
               type="submit"
-              className="py-3 w-40 rounded-lg text-white text-lg font-medium"
+              className="py-3 w-40 rounded-lg text-white sm:text-lg font-medium"
               style={{ backgroundColor: light.primary }}
             >
               Add Category

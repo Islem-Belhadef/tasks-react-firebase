@@ -37,7 +37,7 @@ const Login = () => {
       style={{ backgroundColor: lightMode ? light.background : dark.wall }}
     >
       <div
-        className="rounded-xl py-8 px-12"
+        className="rounded-xl py-8 px-6 sm:px-12 w-11/12 sm:w-fit"
         style={{ backgroundColor: lightMode ? light.wall : dark.background }}
       >
         <h2
@@ -121,7 +121,7 @@ const Login = () => {
             {!isLoading && (
               <button
                 type="submit"
-                className="py-3 w-full rounded-lg text-white text-lg font-medium"
+                className="py-3 w-full rounded-lg text-white sm:text-lg font-medium"
                 style={{ backgroundColor: light.primary }}
               >
                 Sign in
@@ -131,7 +131,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled
-                className="py-3 w-full rounded-lg text-white text-lg font-medium"
+                className="py-3 w-full rounded-lg text-white sm:text-lg font-medium"
                 style={{ backgroundColor: light.background }}
               >
                 <LoadingAnimation />
@@ -139,7 +139,7 @@ const Login = () => {
             )}
             <button
               onClick={handleLoginWithGoogle}
-              className="py-3 w-full border border-solid rounded-lg text-lg font-medium"
+              className="py-3 w-full border border-solid rounded-lg sm:text-lg font-medium"
               style={{ borderColor: light.primary, color: light.primary }}
             >
               Sign in with Google

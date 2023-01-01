@@ -28,6 +28,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { firestore } from "../config/FirebaseClient";
+import MobileNav from "../components/MobileNav";
 
 const Category = () => {
   const navigate = useNavigate();
@@ -114,15 +115,16 @@ const Category = () => {
       style={{ backgroundColor: lightMode ? light.wall : dark.wall }}
     >
       <SideMenu page="category" />
+      <MobileNav />
       <div
-        className="w-full m-2 rounded-2xl overflow-y-scroll"
+        className="w-full md:m-2 rounded-2xl md:overflow-y-auto"
         style={{
           backgroundColor: lightMode ? light.background : dark.background,
         }}
       >
         <div className=" flex flex-col items-center w-11/12 m-auto">
           <h1
-            className="text-5xl font-body font-bold mt-20 mb-10"
+            className="text-3xl md:text-5xl font-body font-bold mt-20 mb-10"
             style={{ color: lightMode ? light.header : dark.header }}
           >
             What are your <span style={{ color: category.color }}>{name}</span>{" "}
@@ -136,7 +138,7 @@ const Category = () => {
             autoComplete="off"
           >
             <div
-              className="rounded-xl p-3 flex items-center w-3/4"
+              className="rounded-xl p-3 lg:flex lg:items-center w-3/4"
               style={{ backgroundColor: lightMode ? light.card : dark.card }}
             >
               <input
@@ -154,40 +156,42 @@ const Category = () => {
                 }}
                 style={{ color: lightMode ? light.text : dark.text }}
               />
-              <div
-                className="rounded-lg h-10 w-10 mr-3 flex justify-center items-center"
-                style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
-              >
-                <input
-                  type="datetime-local"
-                  name="date"
-                  id="date"
-                  className="bg-transparent text-4xl text-transparent cursor-pointer focus:outline-none"
-                  value={datetime}
-                  onChange={(e) => {
-                    setDatetime(e.target.value);
+              <div className="flex items-center w-full justify-center">
+                <div
+                  className="rounded-lg h-10 w-10 mr-3 flex justify-center items-center"
+                  style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
+                >
+                  <input
+                    type="datetime-local"
+                    name="date"
+                    id="date"
+                    className="bg-transparent text-4xl text-transparent cursor-pointer focus:outline-none"
+                    value={datetime}
+                    onChange={(e) => {
+                      setDatetime(e.target.value);
+                    }}
+                  />
+                </div>
+                <div
+                  className="rounded-lg ml-3 py-2 px-4 font-medium"
+                  style={{
+                    color: light.text,
+                    backgroundColor: category.color,
                   }}
-                />
+                >
+                  {category.name}
+                </div>
+                <button
+                  type="submit"
+                  className="rounded-lg ml-3 py-2 px-4 font-medium"
+                  style={{
+                    backgroundColor: lightMode ? light.primary : dark.primary,
+                    color: dark.text,
+                  }}
+                >
+                  Add
+                </button>
               </div>
-              <div
-                className="rounded-lg ml-3 py-2 px-4 font-medium"
-                style={{
-                  color: light.text,
-                  backgroundColor: category.color,
-                }}
-              >
-                {category.name}
-              </div>
-              <button
-                type="submit"
-                className="rounded-lg ml-3 py-2 px-4 font-medium"
-                style={{
-                  backgroundColor: lightMode ? light.primary : dark.primary,
-                  color: dark.text,
-                }}
-              >
-                Add
-              </button>
             </div>
           </form>
           <div className="h-16"></div>
@@ -239,7 +243,7 @@ const Category = () => {
               inital={{ y: -100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -100, opacity: 0 }}
-              className="mb-8 p-4 rounded-lg"
+              className="mb-8 p-4 rounded-lg w-11/12 sm:w-fit"
               style={{ backgroundColor: lightMode ? light.card : dark.card }}
             >
               <form
@@ -267,7 +271,7 @@ const Category = () => {
                     onChange={(e) => {
                       setLabel(e.target.value);
                     }}
-                    className="py-2 px-4 rounded-lg focus:outline-none font-normal"
+                    className="py-2 px-4 rounded-lg focus:outline-none font-normal w-full sm:w-fit"
                     style={{
                       backgroundColor: lightMode ? light.btn : dark.btn,
                       color: lightMode ? light.text : dark.text,
@@ -303,13 +307,13 @@ const Category = () => {
                       navigate("/");
                     }}
                     type="submit"
-                    className="py-3 w-40 rounded-lg text-white bg-red-500 text-lg font-medium"
+                    className="py-3 w-40 rounded-lg text-white bg-red-500 sm:text-lg font-medium"
                   >
                     Delete Category
                   </button>
                   <button
                     type="submit"
-                    className="py-3 w-40 rounded-lg text-white text-lg font-medium"
+                    className="py-3 w-40 rounded-lg text-white sm:text-lg font-medium"
                     style={{ backgroundColor: light.primary }}
                   >
                     Update Category

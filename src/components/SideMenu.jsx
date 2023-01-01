@@ -33,27 +33,23 @@ const SideMenu = ({page}) => {
 
   const [categoriesShown, setCategoriesShown] = useState(false);
   const [showNewCategoryModal, setShowNewCategoryModal] = useState(false);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  // const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  const showCategories = () => {
-    //
-  };
-
-  const changeTheme = () => {
+  const handleChangeTheme = () => {
     setLightMode(!lightMode);
     window.localStorage.setItem("lightMode", !lightMode);
   };
 
   return (
     <>
-      <div className="md:w-1/3 min-w-fit text-center h-full">
+      <div className="md:w-1/3 min-w-fit text-center h-full hidden md:block">
         <div className="p-6 flex flex-col justify-between h-screen">
           <div>
             <div
               className="logo font-header text-2xl font-bold"
               style={{ color: lightMode ? light.background : dark.text }}
             >
-              Tasks
+              Dhakerni
             </div>
             {page==="profile" && <Link
               to="/profile"
@@ -355,7 +351,7 @@ const SideMenu = ({page}) => {
           </div>
           <div className="flex items-center w-full gap-4 self-end">
             <div
-              onClick={changeTheme}
+              onClick={handleChangeTheme}
               className="rounded-lg cursor-pointer p-4"
               style={{
                 backgroundColor: lightMode ? light.background : dark.background,
@@ -382,9 +378,8 @@ const SideMenu = ({page}) => {
                 />
               )}
             </div>
-            <div
-              onClick={(e) => {
-                // handleLogout(e);
+            {/* <div
+              onClick={() => {
                 setShowLogoutModal(true);
               }}
               className="rounded-lg text-red-600 cursor-pointer p-3 w-full"
@@ -393,17 +388,16 @@ const SideMenu = ({page}) => {
               }}
             >
               Logout
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
-      {/* {showNewCategoryModal && <Overlay closeFunciton={setShowNewCategoryModal} child={<NewCategoryModal/>}/>} */}
       {showNewCategoryModal && (
         <NewCategoryModal setShowNewCategoryModal={setShowNewCategoryModal} />
       )}
-      {showLogoutModal && (
+      {/* {showLogoutModal && (
         <LogoutModal setShowLogoutModal={setShowLogoutModal} />
-      )}
+      )} */}
     </>
   );
 };

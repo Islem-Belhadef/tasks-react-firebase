@@ -19,8 +19,8 @@ const Signup = () => {
     loginWithGoogle,
   } = useAuth();
 
-  const firstPage = useRef();
-  const secondPage = useRef();
+  // const firstPage = useRef();
+  // const secondPage = useRef();
   const pfp = useRef();
 
   const [email, setEmail] = useState("");
@@ -28,17 +28,19 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
 
-  const handleGoBack = (e) => {
-    e.preventDefault();
-    firstPage.current.style.display = "block";
-    secondPage.current.style.display = "none";
-  };
+  const [secondPage, setSecondPage] = useState(false);
 
-  const handleContinue = (e) => {
-    e.preventDefault();
-    firstPage.current.style.display = "none";
-    secondPage.current.style.display = "block";
-  };
+  // const handleGoBack = (e) => {
+  //   e.preventDefault();
+  //   firstPage.current.style.display = "block";
+  //   secondPage.current.style.display = "none";
+  // };
+
+  // const handleContinue = (e) => {
+  //   e.preventDefault();
+  //   firstPage.current.style.display = "none";
+  //   secondPage.current.style.display = "block";
+  // };
 
   const handleSignup = (e) => {
     e.preventDefault();
@@ -51,9 +53,9 @@ const Signup = () => {
       style={{ backgroundColor: lightMode ? light.background : dark.wall }}
     >
       <>
-        <div
-          ref={firstPage}
-          className="rounded-xl py-8 px-12"
+        {!secondPage && <div
+          // ref={firstPage}
+          className="rounded-xl py-8 px-6 sm:px-12 w-11/12 sm:w-fit"
           style={{ backgroundColor: lightMode ? light.wall : dark.background }}
         >
           <h2
@@ -74,8 +76,8 @@ const Signup = () => {
           </Link>
           <form
             className="mt-8"
-            onSubmit={(e) => {
-              handleContinue(e);
+            onSubmit={() => {
+              setSecondPage(true);
             }}
           >
             <div className="flex flex-col gap-4 ">
@@ -135,7 +137,7 @@ const Signup = () => {
             <div className="flex flex-col gap-2 mt-8">
               <button
                 type="submit"
-                className="py-3 w-full rounded-lg text-white text-lg font-medium"
+                className="py-3 w-full rounded-lg text-white sm:text-lg font-medium"
                 style={{ backgroundColor: light.primary }}
               >
                 Create account
@@ -149,10 +151,10 @@ const Signup = () => {
               </button>
             </div>
           </form>
-        </div>
-        <div
-          ref={secondPage}
-          className="hidden rounded-xl py-8 px-12"
+        </div>}
+        {secondPage && <div
+          // ref={secondPage}
+          className="rounded-xl py-8 px-6 sm:px-12 w-11/12 sm:w-fit"
           style={{ backgroundColor: lightMode ? light.wall : dark.background }}
         >
           <h2
@@ -169,7 +171,7 @@ const Signup = () => {
               {error && <ErrorModal error={error} />}
               <label
                 htmlFor="pfp"
-                className={lightMode? "font-medium text-gray-500 flex items-center justify-between gap-4": "font-medium text-gray-400 flex items-center justify-between gap-4"}
+                className={lightMode? "font-medium text-gray-500 md:flex items-center justify-between gap-4": "font-medium text-gray-400 md:flex items-center justify-between gap-4"}
               >
                 Profile picture
                 <input
@@ -180,7 +182,7 @@ const Signup = () => {
                   onChange={(e) => {
                     setProfilePicture(e.target.files[0]);
                   }}
-                  className="py-2 px-4 rounded-lg focus:outline-none font-normal"
+                  className="py-2 px-4 mt-2 md:mt-0 rounded-lg focus:outline-none font-normal w-full md:w-fit"
                   style={{
                     backgroundColor: lightMode ? light.btn : dark.btn,
                     color: lightMode ? light.text : dark.text,
@@ -218,7 +220,7 @@ const Signup = () => {
               {!isLoading && (
                 <button
                   type="submit"
-                  className="py-3 w-full rounded-lg text-white text-lg font-medium"
+                  className="py-3 w-full rounded-lg text-white sm:text-lg font-medium"
                   style={{ backgroundColor: light.primary }}
                 >
                   Create account
@@ -228,24 +230,24 @@ const Signup = () => {
                 <button
                   type="submit"
                   disabled
-                  className="py-3 w-full rounded-lg text-white text-lg font-medium"
+                  className="py-3 w-full rounded-lg text-white sm:text-lg font-medium"
                   style={{backgroundColor: light.background}}
                 >
                   <LoadingAnimation />
                 </button>
               )}
               <button
-                onClick={(e) => {
-                  handleGoBack(e);
+                onClick={() => {
+                  setSecondPage(false);
                 }}
-                className="py-3 w-full border border-solid rounded-lg text-lg font-medium"
+                className="py-3 w-full border border-solid rounded-lg sm:text-lg font-medium"
                 style={{ borderColor: light.primary, color: light.primary }}
               >
                 Go back
               </button>
             </div>
           </form>
-        </div>
+        </div>}
       </>
     </div>
   );

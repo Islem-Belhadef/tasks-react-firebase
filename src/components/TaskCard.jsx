@@ -80,7 +80,7 @@ const TaskCard = ({ task }) => {
             }}
           ></div>
           <h3
-            className="mx-5 py-2 text-lg"
+            className="mx-5 py-2 text-sm sm:text-base md:text-lg"
             style={{
               color: lightMode ? light.text : dark.text,
               textDecorationLine: task.data().done ? "line-through" : "",
@@ -91,7 +91,7 @@ const TaskCard = ({ task }) => {
         </div>
         <div className="flex items-center">
           <h3
-            className="mx-5 py-2"
+            className="mx-5 py-2 text-xs sm:text-base"
             style={{ color: lightMode ? light.text : dark.text }}
           >
             {taskDate.getDate() === today
@@ -152,12 +152,12 @@ const TaskCard = ({ task }) => {
       </div>
       {optionsModal && (
         <motion.div initial={{ y: -60 }} animate={{ y: 0 }} exit={{ y: -60 }}>
-          <div className="bg-accent h-px w-full my-3 rounded-md"></div>
+          <div className="h-px w-full my-3 rounded-md" style={{backgroundColor: light.primary}}></div>
           <div className="flex items-center justify-end">
             <select
               name="category"
               id="category"
-              className="rounded-lg py-2 px-4 pr-10 font-medium cursor-pointer focus:outline-none"
+              className="rounded-lg mx-2 py-2 px-4 pr-10 font-medium cursor-pointer focus:outline-none"
               style={{
                 backgroundColor: lightMode ? light.btn : dark.btn,
                 color: light.primary,
@@ -184,39 +184,48 @@ const TaskCard = ({ task }) => {
             </select>
             {task.data().favorite === false && (
               <div
-                className="rounded-lg mx-2 py-2 px-4 flex justify-center items-center cursor-pointer"
+                className="rounded-lg mx-2 w-10 h-10 sm:py-2 sm:px-4 sm:w-fit sm-h-fit flex justify-center items-center cursor-pointer"
                 style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
                 onClick={() => {
                   setFavorite(!favorite);
                   toggleFav();
                 }}
               >
-                <img src={heart_blue} alt="heart" className="w-4 mr-3" />
-                <p className="font-medium" style={{ color: light.primary }}>
+                <img src={heart_blue} alt="heart" className="w-4 sm:mr-3" />
+                <p
+                  className="font-medium hidden sm:block"
+                  style={{ color: light.primary }}
+                >
                   Add to favorites
                 </p>
               </div>
             )}
             {task.data().favorite === true && (
               <div
-                className="rounded-lg mx-2 py-2 px-4 flex justify-center items-center cursor-pointer"
+                className="rounded-lg mx-2 w-10 h-10 sm:py-2 sm:px-4 sm:w-fit sm-h-fit flex justify-center items-center cursor-pointer"
                 style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
                 onClick={() => {
                   setFavorite(!favorite);
                   toggleFav();
                 }}
               >
-                <img src={heart_red} alt="heart" className="w-4 mr-3" />
-                <p className="text-red-500 font-medium ">Remove favorite</p>
+                <img src={heart_red} alt="heart" className="w-4 sm:mr-3" />
+                <p className="text-red-500 font-medium hidden sm:block">
+                  Remove favorite
+                </p>
               </div>
             )}
             <div
-              className="rounded-lg ml-2 py-2 px-4 flex justify-center items-center cursor-pointer"
+              className="rounded-lg ml-2 w-10 h-10 sm:py-2 sm:px-4 sm:w-fit sm-h-fit flex justify-center items-center cursor-pointer"
               style={{ backgroundColor: lightMode ? light.btn : dark.btn }}
-              onClick={(e)=>{handleDeleteTask(e)}}
+              onClick={(e) => {
+                handleDeleteTask(e);
+              }}
             >
-              <img src={trash} alt="trash" className="w-4 mr-3" />
-              <p className="text-red-500 font-medium ">Delete</p>
+              <img src={trash} alt="trash" className="w-4 sm:mr-3" />
+              <p className="text-red-500 font-medium  hidden sm:block">
+                Delete
+              </p>
             </div>
           </div>
         </motion.div>

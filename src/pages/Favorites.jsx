@@ -12,6 +12,7 @@ import { useTasks } from "../contexts/TasksContext";
 // Components
 import SideMenu from "../components/SideMenu";
 import TaskCard from "../components/TaskCard";
+import MobileNav from "../components/MobileNav";
 
 const Favorites = () => {
   const { currentUser } = useAuth();
@@ -28,8 +29,9 @@ const Favorites = () => {
       style={{ backgroundColor: lightMode ? light.wall : dark.wall }}
     >
       <SideMenu page="favorites" />
+      <MobileNav />
       <div
-        className="w-full m-2 rounded-2xl overflow-y-scroll"
+        className="w-full md:m-2 rounded-xl md:rounded-2xl min-h-screen"
         style={{
           backgroundColor: lightMode ? light.background : dark.background,
         }}
