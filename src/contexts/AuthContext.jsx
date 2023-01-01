@@ -29,7 +29,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-
+  
   const [currentUser, setCurrentUser] = useState();
 
   const [userLoading, setUserLoading] = useState(true);
